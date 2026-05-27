@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Padaria Portuguesa - Receitas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />  <script src="dark-mode.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
+  
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="logo"><a href="index.html">Padaria Portuguesa</a></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="produtos.html" class="nav-link">Produtos</a>
+          <a href="como-usar.html" class="nav-link">Como usar</a>
+          <a href="receitas.html" class="nav-link active">Receitas</a>
+          <a href="sobre.html" class="nav-link">Sobre</a>
+          <a href="orders.html" class="nav-link">Encomendas</a>
+          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          
+          <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
+          <button id="auth-btn" class="btn-secondary"></button>
+          <button id="cart-btn" class="btn-primary cart-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count" class="cart-count">0</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main recipes-page" id="main-content">
+    <div class="container">
+      <div class="hero">
+        <h2 class="title">Receitas</h2>
+        <p class="subtitle">Inspira-te com receitas da Padaria Portuguesa</p>
+      </div>
+
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>A carregar receitas...</p>
+      </div>
+
+      <div id="recipes-grid" class="products-grid"></div>
+
+      <div id="empty-state" class="empty-state hidden">
+        <p>Ainda não existem receitas.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="recipe-modal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recipe-modal-title">
+      <button id="recipe-modal-close" class="modal-close" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-body">
+        <img id="recipe-modal-image" class="modal-image" alt="" />
+        <div class="modal-content">
+          <h3 id="recipe-modal-title" class="modal-title"></h3>
+          <p id="recipe-modal-description" class="modal-description"></p>
+
+          <div class="modal-section">
+            <h4>Ingredientes</h4>
+            <ul id="recipe-modal-ingredients" class="modal-list"></ul>
+          </div>
+
+          <div class="modal-section">
+            <h4>Passos</h4>
+            <ol id="recipe-modal-steps" class="modal-list"></ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="receitas.js"></script>
+</body>
+</html>

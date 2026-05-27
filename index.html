@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padaria Portuguesa - Povoa de Varzim</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="dark-mode.js"></script>
+  <style>
+    /* Landing Page Styles */
+    .landing-header {
+      background-color: transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      border-bottom: none;
+      padding: 1.5rem 0;
+      transition: all 0.4s ease;
+    }
+
+    .landing-header .logo {
+      color: white;
+      font-size: 1.75rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .landing-header .nav-link {
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .landing-header .nav-link:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .landing-header .btn-secondary {
+      color: white;
+      border-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .landing-header .btn-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Hero Section - Redesigned */
+    .hero-landing {
+      min-height: 100vh;
+      background: linear-gradient(160deg, rgba(35, 25, 15, 0.5) 0%, rgba(60, 40, 25, 0.7) 50%, rgba(45, 30, 20, 0.85) 100%), 
+                  url('https://images.pexels.com/photos/1070946/pexels-photo-1070946.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient glow effect */
+    .hero-landing::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(193, 123, 58, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      animation: pulse-glow 8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+      50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+    }
+
+    /* Vignette effect */
+    .hero-landing::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(20, 15, 10, 0.4) 100%);
+      pointer-events: none;
+    }
+
+    /* Wave Animation - Completely Redesigned */
+    .wave-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: relative;
+      width: 100%;
+      height: 180px;
+    }
+
+    .wave svg {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+    }
+
+    .wave svg:nth-child(1) {
+      animation: wave-flow 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+      fill: var(--bg-secondary);
+      filter: drop-shadow(0 -8px 20px rgba(139, 90, 60, 0.15));
+    }
+
+    .wave svg:nth-child(2) {
+      animation: wave-flow 10s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite reverse;
+      fill: rgba(250, 248, 245, 0.7);
+      bottom: -5px;
+    }
+
+    .wave svg:nth-child(3) {
+      animation: wave-flow 8s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+      fill: rgba(250, 248, 245, 0.4);
+      bottom: -12px;
+    }
+
+    .wave svg:nth-child(4) {
+      animation: wave-flow 14s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite reverse;
+      fill: rgba(250, 248, 245, 0.25);
+      bottom: -20px;
+    }
+
+    @keyframes wave-flow {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Floating particles - Enhanced */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(255, 220, 180, 0.9) 0%, rgba(255, 200, 150, 0.3) 50%, transparent 70%);
+      border-radius: 50%;
+      animation: float-up 20s ease-in-out infinite;
+      box-shadow: 0 0 15px rgba(255, 200, 150, 0.4);
+    }
+
+    .particle:nth-child(1) { left: 8%; width: 6px; height: 6px; animation-delay: 0s; animation-duration: 18s; }
+    .particle:nth-child(2) { left: 18%; width: 4px; height: 4px; animation-delay: 2s; animation-duration: 22s; }
+    .particle:nth-child(3) { left: 28%; width: 8px; height: 8px; animation-delay: 4s; animation-duration: 20s; }
+    .particle:nth-child(4) { left: 38%; width: 5px; height: 5px; animation-delay: 1s; animation-duration: 24s; }
+    .particle:nth-child(5) { left: 48%; width: 3px; height: 3px; animation-delay: 3s; animation-duration: 19s; }
+    .particle:nth-child(6) { left: 58%; width: 7px; height: 7px; animation-delay: 5s; animation-duration: 21s; }
+    .particle:nth-child(7) { left: 68%; width: 4px; height: 4px; animation-delay: 2.5s; animation-duration: 23s; }
+    .particle:nth-child(8) { left: 78%; width: 6px; height: 6px; animation-delay: 1.5s; animation-duration: 17s; }
+    .particle:nth-child(9) { left: 88%; width: 5px; height: 5px; animation-delay: 4.5s; animation-duration: 25s; }
+    .particle:nth-child(10) { left: 13%; width: 3px; height: 3px; animation-delay: 3.5s; animation-duration: 20s; }
+    .particle:nth-child(11) { left: 33%; width: 4px; height: 4px; animation-delay: 6s; animation-duration: 22s; }
+    .particle:nth-child(12) { left: 53%; width: 6px; height: 6px; animation-delay: 7s; animation-duration: 18s; }
+    .particle:nth-child(13) { left: 73%; width: 3px; height: 3px; animation-delay: 8s; animation-duration: 24s; }
+    .particle:nth-child(14) { left: 93%; width: 5px; height: 5px; animation-delay: 9s; animation-duration: 21s; }
+    .particle:nth-child(15) { left: 5%; width: 4px; height: 4px; animation-delay: 10s; animation-duration: 19s; }
+
+    @keyframes float-up {
+      0% {
+        transform: translateY(100vh) scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      5% {
+        opacity: 0;
+      }
+      15% {
+        opacity: 1;
+        transform: translateY(80vh) scale(1) rotate(45deg);
+      }
+      50% {
+        transform: translateY(40vh) scale(1.1) rotate(180deg);
+      }
+      85% {
+        opacity: 1;
+        transform: translateY(10vh) scale(1) rotate(315deg);
+      }
+      95% {
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(-10vh) scale(0.5) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Sparkle effect */
+    .sparkles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle-twinkle 4s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 25%; left: 85%; animation-delay: 0.5s; }
+    .sparkle:nth-child(3) { top: 45%; left: 15%; animation-delay: 1s; }
+    .sparkle:nth-child(4) { top: 35%; left: 75%; animation-delay: 1.5s; }
+    .sparkle:nth-child(5) { top: 55%; left: 90%; animation-delay: 2s; }
+    .sparkle:nth-child(6) { top: 20%; left: 60%; animation-delay: 2.5s; }
+    .sparkle:nth-child(7) { top: 65%; left: 5%; animation-delay: 3s; }
+    .sparkle:nth-child(8) { top: 10%; left: 40%; animation-delay: 3.5s; }
+
+    @keyframes sparkle-twinkle {
+      0%, 100% { 
+        opacity: 0; 
+        transform: scale(0);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+      }
+      50% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 200, 150, 0.4);
+      }
+    }
+
+    /* Hero content animations - More sophisticated */
+    .hero-content {
+      z-index: 20;
+      position: relative;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(50px);
+        filter: blur(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(5px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes slideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .logo-container {
+      animation: scaleIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+
+    .hero-title {
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+
+    .hero-location {
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+    }
+
+    .hero-tagline {
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+    }
+
+    .hero-cta {
+      animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s both;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .logo-container {
+      margin-bottom: 2rem;
+    }
+
+    .logo-placeholder {
+      width: 150px;
+      height: 150px;
+      border: 3px dashed rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.7);
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-image {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4), 0 0 60px rgba(193, 123, 58, 0.3);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .logo-image:hover {
+      transform: scale(1.05) rotate(3deg);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(193, 123, 58, 0.4);
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 4px 20px rgba(0, 0, 0, 0.4);
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #f0e6d8 50%, #ffffff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(2px 4px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    .hero-location {
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-location svg {
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      animation: location-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes location-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 25;
+    }
+
+    .btn-hero-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #a56a43 50%, var(--primary) 100%);
+      background-size: 200% 200%;
+      color: white;
+      border: none;
+      padding: 1.1rem 2.8rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      box-shadow: 0 8px 30px rgba(139, 90, 60, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-hero-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s;
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 15px 40px rgba(139, 90, 60, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      background-position: 100% 0;
+    }
+
+    .btn-hero-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-hero-secondary {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      padding: 1.1rem 2.8rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      z-index: 30;
+    }
+
+    .btn-hero-secondary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0);
+      transition: background 0.3s;
+    }
+
+    .btn-hero-secondary:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-color: white;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      animation: float-scroll 3s ease-in-out infinite;
+    }
+
+    .scroll-indicator svg {
+      width: 36px;
+      height: 36px;
+      color: rgba(255, 255, 255, 0.8);
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    }
+
+    @keyframes float-scroll {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.8;
+      }
+      50% {
+        transform: translateX(-50%) translateY(15px);
+        opacity: 1;
+      }
+    }
+
+    /* About Section - Enhanced */
+    .about-section {
+      padding: 7rem 0;
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, #f8f4ef 100%);
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .about-section::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(193, 123, 58, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      position: relative;
+    }
+
+    .about-images::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: 20px;
+      bottom: 20px;
+      border: 3px solid rgba(193, 123, 58, 0.15);
+      border-radius: 20px;
+      z-index: 0;
+    }
+
+    .about-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 15px 40px rgba(45, 36, 25, 0.12);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-image:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(45, 36, 25, 0.2);
+    }
+
+    .about-image:first-child {
+      height: 440px;
+      grid-row: span 2;
+    }
+
+    .about-content {
+      padding: 1rem;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 1rem;
+      display: inline-block;
+      position: relative;
+    }
+
+    .section-label::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background: var(--primary);
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .about-text {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text:last-of-type {
+      margin-bottom: 2.5rem;
+    }
+
+    .about-features {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateX(5px);
+    }
+
+    .feature-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--primary-light) 0%, #f0e6da 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      box-shadow: 0 8px 20px rgba(139, 90, 60, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover .feature-icon {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 25px rgba(139, 90, 60, 0.25);
+    }
+
+    .feature-icon svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .feature-text {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    /* Highlights Section - Enhanced */
+    .highlights-section {
+      padding: 7rem 0;
+      background: linear-gradient(180deg, #f8f4ef 0%, var(--bg-primary) 100%);
+      position: relative;
+    }
+
+    .highlights-header {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 4.5rem;
+    }
+
+    .highlights-header .section-label::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+
+    .highlight-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fffbf7 100%);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(45, 36, 25, 0.08);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid rgba(139, 90, 60, 0.08);
+      position: relative;
+    }
+
+    .highlight-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .highlight-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 60px rgba(45, 36, 25, 0.15);
+    }
+
+    .highlight-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .highlight-image {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .highlight-card:hover .highlight-image {
+      transform: scale(1.08);
+    }
+
+    .highlight-image-wrapper {
+      overflow: hidden;
+    }
+
+    .highlight-content {
+      padding: 1.75rem;
+    }
+
+    .highlight-title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .highlight-description {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1rem;
+    }
+
+    /* CTA Section - Enhanced */
+    .cta-section {
+      padding: 8rem 0;
+      background: linear-gradient(135deg, rgba(139, 90, 60, 0.95) 0%, rgba(90, 55, 35, 0.98) 100%),
+                  url('https://images.pexels.com/photos/1756062/pexels-photo-1756062.jpeg?auto=compress&cs=tinysrgb&w=1920');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 150px;
+      background: linear-gradient(180deg, rgba(250, 248, 245, 0.1) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 150px;
+      background: linear-gradient(0deg, rgba(45, 36, 25, 0.3) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      max-width: 750px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      text-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-text {
+      font-size: 1.3rem;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-section .btn-hero-primary {
+      background: linear-gradient(135deg, #ffffff 0%, #f5efe8 100%);
+      color: var(--primary);
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .cta-section .btn-hero-primary:hover {
+      background: white;
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Footer - Enhanced */
+    .footer {
+      background: linear-gradient(180deg, #2d2419 0%, #1a140d 100%);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 0 2rem;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(193, 123, 58, 0.5), transparent);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .footer-brand .logo {
+      color: white;
+      margin-bottom: 1.25rem;
+      font-size: 1.75rem;
+    }
+
+    .footer-brand p {
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .footer-title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: white;
+      margin-bottom: 1.75rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 25px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.85rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .footer-contact p {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.65);
+      transition: color 0.3s ease;
+    }
+
+    .footer-contact p:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .footer-contact svg {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .footer-bottom {
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .about-images {
+        order: -1;
+      }
+
+      .highlights-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        text-align: center;
+      }
+
+      .footer-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .footer-links a:hover {
+        transform: none;
+      }
+
+      .footer-contact p {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-landing {
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+
+      .hero-title {
+        font-size: clamp(2rem, 8vw, 2.75rem);
+      }
+
+      .hero-tagline {
+        font-size: 1rem;
+        padding: 0 1rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        padding: 0 2rem;
+      }
+
+      .btn-hero-primary,
+      .btn-hero-secondary {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+
+      .scroll-indicator {
+        bottom: 120px;
+      }
+
+      .wave-container {
+        height: 100px;
+      }
+
+      .section-title {
+        font-size: 1.75rem;
+      }
+
+      .about-section {
+        padding: 4rem 0;
+      }
+
+      .about-features {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .about-images {
+        grid-template-columns: 1fr;
+      }
+
+      .about-image:first-child {
+        height: 250px;
+        grid-row: auto;
+      }
+
+      .about-image {
+        height: 200px;
+      }
+
+      .landing-header .nav {
+        display: none;
+      }
+
+      .cta-section {
+        padding: 4rem 0;
+      }
+
+      .sparkles {
+        display: none;
+      }
+
+      .particles .particle {
+        opacity: 0.4;
+      }
+
+      .hero-logo {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 1.75rem;
+      }
+
+      .hero-location {
+        font-size: 0.875rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .section-description {
+        font-size: 0.95rem;
+      }
+
+      .highlight-card {
+        padding: 1.75rem;
+      }
+
+      .footer {
+        padding: 3rem 0 1.5rem;
+      }
+    }
+
+    /* Reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .particles .particle,
+      .sparkles .sparkle,
+      .wave-container svg,
+      .hero-landing::before,
+      .scroll-indicator {
+        animation: none !important;
+      }
+
+      .btn-hero-primary::before,
+      .btn-hero-secondary::before {
+        display: none;
+      }
+
+      * {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header landing-header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="logo"><a href="index.html">Padaria Portuguesa</a></h1>
+        <nav class="nav">
+          <a href="produtos.html" class="nav-link">Produtos</a>
+          <a href="como-usar.html" class="nav-link">Como usar</a>
+          <a href="receitas.html" class="nav-link">Receitas</a>
+          <a href="sobre.html" class="nav-link">Sobre</a>
+          <a href="orders.html" class="nav-link">Encomendas</a>
+          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          
+          <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
+          <button id="auth-btn" class="btn-secondary"></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-landing">
+    <!-- Sparkles Effect -->
+    <div class="sparkles">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="logo-container">
+        <img src="styles/logo.png" alt="Logo Padaria" class="logo-image" id="logo-image">
+      </div>
+      <h1 class="hero-title">Padaria Portuguesa</h1>
+      <p class="hero-location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        Póvoa de Varzim
+      </p>
+      <p class="hero-tagline">
+        Pão fresco, bolos tradicionais e o sabor autêntico de uma padaria com história.
+        Todos os dias, feito com dedicação para a sua família.
+      </p>
+      <div class="hero-cta">
+        <a href="produtos.html" class="btn-hero-primary">Ver Produtos</a>
+        <a href="#sobre" class="btn-hero-secondary">A Nossa História</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M7 13l5 5 5-5"></path>
+        <path d="M7 6l5 5 5-5"></path>
+      </svg>
+    </div>
+
+    <!-- Wave Animation - Enhanced organic shapes -->
+    <div class="wave-container">
+      <div class="wave">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M0,40 C120,80 240,100 360,80 C480,60 600,20 720,30 C840,40 960,90 1080,85 C1200,80 1320,50 1440,60 L1440,120 L0,120 Z"></path>
+          <path d="M1440,40 C1560,80 1680,100 1800,80 C1920,60 2040,20 2160,30 C2280,40 2400,90 2520,85 C2640,80 2760,50 2880,60 L2880,120 L1440,120 Z"></path>
+        </svg>
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M0,60 C180,20 360,90 540,70 C720,50 900,100 1080,75 C1260,50 1440,30 1440,50 L1440,120 L0,120 Z"></path>
+          <path d="M1440,60 C1620,20 1800,90 1980,70 C2160,50 2340,100 2520,75 C2700,50 2880,30 2880,50 L2880,120 L1440,120 Z"></path>
+        </svg>
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M0,80 C240,40 480,95 720,65 C960,35 1200,85 1440,70 L1440,120 L0,120 Z"></path>
+          <path d="M1440,80 C1680,40 1920,95 2160,65 C2400,35 2640,85 2880,70 L2880,120 L1440,120 Z"></path>
+        </svg>
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+          <path d="M0,90 C360,50 720,100 1080,60 C1260,40 1440,80 1440,90 L1440,120 L0,120 Z"></path>
+          <path d="M1440,90 C1800,50 2160,100 2520,60 C2700,40 2880,80 2880,90 L2880,120 L1440,120 Z"></path>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section" id="sobre">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-images">
+          <img 
+            src="https://images.pexels.com/photos/2280545/pexels-photo-2280545.jpeg?auto=compress&cs=tinysrgb&w=800" 
+            alt="Padeiro a amassar pão" 
+            class="about-image"
+          >
+          <img 
+            src="https://images.pexels.com/photos/1775043/pexels-photo-1775043.jpeg?auto=compress&cs=tinysrgb&w=800" 
+            alt="Balcão de padaria tradicional" 
+            class="about-image"
+          >
+          <img 
+            src="https://images.pexels.com/photos/6163263/pexels-photo-6163263.jpeg?auto=compress&cs=tinysrgb&w=800" 
+            alt="Pão caseiro em cesto" 
+            class="about-image"
+          >
+        </div>
+        <div class="about-content">
+          <span class="section-label">A Nossa Historia</span>
+          <h2 class="section-title">Tradicao e Sabor na Povoa de Varzim</h2>
+          <p class="about-text">
+            A nossa padaria fica na Povoa de Varzim e faz parte da vida da comunidade ha muitos anos. 
+            Todos os dias preparamos pao fresco, bolos simples e produtos feitos com cuidado e tradicao.
+          </p>
+          <p class="about-text">
+            De manha cedo, o cheiro do pao quente enche a rua e convida quem passa a entrar. 
+            Gostamos de receber bem os nossos clientes e de oferecer produtos de qualidade para todas as familias.
+          </p>
+          <p class="about-text">
+            Mais do que uma padaria, somos um espaco de proximidade, onde o pao e feito com dedicacao e servido com um sorriso.
+          </p>
+          <div class="about-features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <span class="feature-text">Fresco Todos os Dias</span>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </div>
+              <span class="feature-text">Feito com Amor</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights Section -->
+  <section class="highlights-section">
+    <div class="container">
+      <div class="highlights-header">
+        <span class="section-label">Especialidades</span>
+        <h2 class="section-title">O Melhor da Nossa Padaria</h2>
+      </div>
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <img 
+            src="https://images.pexels.com/photos/1387070/pexels-photo-1387070.jpeg?auto=compress&cs=tinysrgb&w=800" 
+            alt="Pão Tradicional" 
+            class="highlight-image"
+          >
+          <div class="highlight-content">
+            <h3 class="highlight-title">Pao Tradicional</h3>
+            <p class="highlight-description">
+              Pao cozido no forno todos os dias, com receitas transmitidas de geracao em geracao.
+            </p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <img 
+            src="https://images.pexels.com/photos/2135/food-france-morning-breakfast.jpg?auto=compress&cs=tinysrgb&w=800" 
+            alt="Pastelaria Artesanal" 
+            class="highlight-image"
+          >
+          <div class="highlight-content">
+            <h3 class="highlight-title">Pastelaria Artesanal</h3>
+            <p class="highlight-description">
+              Pasteis de nata, croissants e outras delicias feitas com ingredientes de qualidade.
+            </p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <img 
+            src="https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=800" 
+            alt="Bolos de Festa" 
+            class="highlight-image"
+          >
+          <div class="highlight-content">
+            <h3 class="highlight-title">Bolos de Festa</h3>
+            <p class="highlight-description">
+              Bolos personalizados para aniversarios, batizados e todas as ocasioes especiais.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Encomende Ja os Seus Favoritos</h2>
+        <p class="cta-text">
+          Faca a sua encomenda online e levante na nossa padaria. Simples, rapido e sempre fresquinho!
+        </p>
+        <a href="produtos.html" class="btn-hero-primary">Ver Todos os Produtos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2 class="logo">Padaria Portuguesa</h2>
+          <p>
+            Uma padaria tradicional na Povoa de Varzim, onde o pao e feito com dedicacao 
+            e servido com um sorriso ha muitos anos.
+          </p>
+        </div>
+        <div class="footer-nav">
+          <h3 class="footer-title">Navegacao</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="produtos.html">Produtos</a></li>
+            <li><a href="orders.html">Encomendas</a></li>
+            <li><a href="auth.html">Entrar</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h3 class="footer-title">Contacto</h3>
+          <p>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Povoa de Varzim, Portugal
+          </p>
+          <p>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            +351 XXX XXX XXX
+          </p>
+          <p>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Seg - Sab: 7h - 20h
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>2024 Padaria Portuguesa. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="./firebase-config.js"></script>
+</body>
+</html>

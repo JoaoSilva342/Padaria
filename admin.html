@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Admin - Padaria Portuguesa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="dark-mode.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
+  
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="logo"><a href="index.html">Padaria Portuguesa</a></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="produtos.html" class="nav-link">Produtos</a>
+          <a href="como-usar.html" class="nav-link">Como usar</a>
+          <a href="receitas.html" class="nav-link">Receitas</a>
+          <a href="sobre.html" class="nav-link">Sobre</a>
+          <a href="orders.html" class="nav-link">Encomendas</a>
+          <a href="admin.html" class="nav-link active">Admin</a>
+          
+          <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
+          <button id="auth-btn" class="btn-secondary"></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main-content">
+    <div class="container">
+      <div id="access-denied" class="empty-cart hidden">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+        </svg>
+        <h3>Acesso Negado</h3>
+        <p>Não tem permissões para aceder a esta página</p>
+        <a href="produtos.html" class="btn-primary">Voltar aos Produtos</a>
+      </div>
+
+      <div id="admin-content">
+        <h2 class="page-title">Painel de Administração</h2>
+
+        <!-- Admin Tabs Navigation -->
+        <div class="admin-tabs">
+          <button type="button" class="admin-tab active" data-tab="dashboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span>Dashboard</span>
+          </button>
+          <button type="button" class="admin-tab" data-tab="produtos">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+            <span>Produtos</span>
+          </button>
+          <button type="button" class="admin-tab" data-tab="receitas">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>Receitas</span>
+          </button>
+          <button type="button" class="admin-tab" data-tab="utilizadores">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Utilizadores</span>
+          </button>
+          <button type="button" class="admin-tab" data-tab="encomendas">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>Encomendas</span>
+          </button>
+          <button type="button" class="admin-tab" data-tab="descontos">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+              <path d="M7 7h10v10H7z"></path>
+              <path d="M16 3l5 5"></path>
+            </svg>
+            <span>Descontos</span>
+          </button>
+        </div>
+
+        <!-- Tab: Dashboard -->
+        <div class="admin-tab-content active" id="admin-tab-dashboard">
+        <div class="stats-toolbar">
+          <p class="stats-scope-text">A mostrar métricas de: <strong id="stats-scope-label">Hoje</strong></p>
+          <div class="stats-period-control">
+            <label for="stats-period">Período</label>
+            <select id="stats-period">
+              <option value="today">Hoje</option>
+              <option value="weekly">Semanal</option>
+              <option value="monthly">Mensal</option>
+              <option value="all">Sempre</option>
+              <option value="custom">Avançado (dia específico)</option>
+            </select>
+            <div id="stats-custom-date-wrap" class="stats-custom-date hidden">
+              <label for="stats-custom-date">Dia</label>
+              <input type="date" id="stats-custom-date">
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Total de Encomendas</p>
+              <p class="stat-value" id="total-orders">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-success">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Receita Total</p>
+              <p class="stat-value" id="total-revenue">0.00 €</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-warning">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Pendentes</p>
+              <p class="stat-value" id="pending-orders">0</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon stat-icon-complete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-label">Concluídas</p>
+              <p class="stat-value" id="completed-orders">0</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid" id="charts-section">
+          <div class="chart-card">
+            <h4>Vendas dos Últimos 7 Dias</h4>
+            <div class="chart-container">
+              <canvas id="sales-chart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card" id="category-chart-card">
+            <h4>Distribuição por Categoria</h4>
+            <div class="chart-container">
+              <canvas id="category-chart"></canvas>
+            </div>
+          </div>
+        </div>
+        </div><!-- End Dashboard Tab -->
+
+        <!-- Tab: Utilizadores -->
+        <div class="admin-tab-content" id="admin-tab-utilizadores">
+        <div class="card mb-2" id="user-management-section">
+          <h3 class="card-title">Gestão de Utilizadores</h3>
+          <p class="muted-text mb-1">Apenas administradores podem criar novas contas de funcionários e administradores</p>
+          
+          <!-- Lista de Utilizadores (apenas para super admin) -->
+          <div id="users-list-section" class="hidden mb-2">
+            <h4 class="h4-small">Utilizadores Registados</h4>
+            <div id="users-list" class="admin-list"></div>
+          </div>
+          
+          <h4 class="h4-small">Criar Novo Utilizador</h4>
+          <form id="create-user-form" class="auth-form">
+            <div class="form-group">
+              <label for="new-user-email">Email</label>
+              <input type="email" id="new-user-email" placeholder="funcionario@exemplo.com" required>
+            </div>
+            <div class="form-group">
+              <label for="new-user-password">Password</label>
+              <input type="password" id="new-user-password" required minlength="6">
+            </div>
+            <div class="form-group">
+              <label for="new-user-name">Nome completo</label>
+              <input type="text" id="new-user-name" placeholder="João Silva" required>
+            </div>
+            <div class="form-group">
+              <label for="new-user-role">Tipo de conta</label>
+              <select id="new-user-role" required>
+                <option value="staff">Funcionário (pode gerir produtos)</option>
+                <option value="admin">Administrador (acesso total)</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">Criar Utilizador</button>
+          </form>
+        </div>
+        </div><!-- End Utilizadores Tab -->
+
+        <!-- Tab: Produtos -->
+        <div class="admin-tab-content" id="admin-tab-produtos">
+        <div class="card mb-2" id="product-management-section">
+          <h3 class="card-title">Gestão de Produtos</h3>
+          <p class="muted-text mb-1">Apenas administradores podem criar novos produtos</p>
+          
+          <div class="admin-form-preview-container">
+            <!-- Form Side -->
+            <div class="admin-form-side">
+              <form id="create-product-form" class="auth-form">
+            <div class="form-group">
+              <label for="product-name">Nome do Produto</label>
+              <input type="text" id="product-name" placeholder="Ex: Pão de Forma" required>
+            </div>
+            <div class="form-group">
+              <label for="product-price">Preço (€)</label>
+              <input type="number" id="product-price" step="0.01" min="0.01" placeholder="2.50" required>
+            </div>
+            <div class="form-group">
+              <label for="product-category">Categoria</label>
+              <select id="product-category" required>
+                <option value="">Selecione uma categoria</option>
+                <option value="bread">Pão</option>
+                <option value="pastry">Pastelaria</option>
+                <option value="cake">Bolos</option>
+                <option value="snacks">Snacks</option>
+                <option value="drinks">Bebidas</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="product-details">Detalhes do Produto</label>
+              <textarea id="product-details" rows="3" placeholder="Ex: Vendido à unidade. Contém farinha de trigo, ovos e leite."></textarea>
+              <small class="small-muted">
+                Opcional: descreva se é à unidade, o que contém, alergénios, etc.
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="product-image-url">Imagem (URL)</label>
+              <input type="url" id="product-image-url" placeholder="https://exemplo.com/imagem.jpg" />
+              <small class="small-muted">
+                Opcional: cole um link (Imgur, Drive, etc.)
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label for="product-image-file">Imagem (ficheiro do PC)</label>
+              <input type="file" id="product-image-file" accept="image/*" />
+              <small class="small-muted">
+                A imagem e guardada no Firestore como base64 (sem Storage). Recomendado: 1200x800 (minimo 900x500), ate ~480KB apos compressao.
+              </small>
+              <img id="product-image-preview" class="preview-image hidden mt-075" alt="Pré-visualização" />
+            </div>
+            <div class="form-group">
+              <label class="flex-gap-8">
+                <input type="checkbox" id="product-out-of-stock">
+                Tirar do stock
+              </label>
+            </div>
+            <div class="form-group hidden" id="product-restock-wrap">
+              <label for="product-restock-estimate">Tempo previsto para voltar</label>
+              <small class="small-muted">Escreva apenas o número de dias</small>
+              <input type="number" id="product-restock-estimate" placeholder="Ex: 2" min="1" max="365">
+            </div>
+            <button type="submit" class="btn-primary" id="create-product-btn">Criar Produto</button>
+              </form>
+            </div>
+            
+            <!-- Preview Side -->
+            <div class="admin-preview-side">
+              <div class="preview-header">
+                <span class="preview-badge">Pré-visualização</span>
+                <h4>Como vai aparecer na página de Produtos</h4>
+              </div>
+              <div class="preview-card-container">
+                <div id="product-live-preview" class="product-card preview-card">
+                  <img src="https://via.placeholder.com/300x200?text=Imagem+do+Produto" alt="Preview" class="product-image" id="preview-product-image">
+                  <div class="product-content">
+                    <span class="product-category" id="preview-product-category">Categoria</span>
+                    <h3 class="product-name" id="preview-product-name">Nome do Produto</h3>
+                    <p class="product-description" id="preview-product-description">Receita artesanal preparada diariamente.</p>
+                    <div class="product-footer">
+                      <span class="product-price" id="preview-product-price">€0.00</span>
+                      <button class="btn-primary" disabled>Adicionar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-1-5">
+            <h4 class="h4-small">Produtos existentes</h4>
+            <div id="admin-products-list" class="admin-list"></div>
+          </div>
+        </div>
+        </div><!-- End Produtos Tab -->
+
+        <!-- Tab: Receitas -->
+        <div class="admin-tab-content" id="admin-tab-receitas">
+        <div class="card mb-2" id="recipe-management-section">
+          <h3 class="card-title">Gestão de Receitas</h3>
+          <p class="muted-text mb-1">Apenas administradores podem criar e remover receitas</p>
+
+          <div class="admin-form-preview-container">
+            <!-- Form Side -->
+            <div class="admin-form-side">
+              <form id="create-recipe-form" class="auth-form">
+            <div class="form-group">
+              <label for="recipe-title">Título</label>
+              <input type="text" id="recipe-title" placeholder="Ex: Pão Caseiro" required />
+            </div>
+            <div class="form-group">
+              <label for="recipe-description">Descrição</label>
+              <textarea id="recipe-description" rows="3" placeholder="Uma descrição curta..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="recipe-ingredients">Ingredientes (1 por linha)</label>
+              <textarea id="recipe-ingredients" rows="6" placeholder="500g farinha\n300ml água\n10g sal"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="recipe-steps">Passos (1 por linha)</label>
+              <textarea id="recipe-steps" rows="7" placeholder="Misturar os ingredientes\nAmassar 10 min\nDeixar levedar..."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="recipe-image-url">Imagem (URL)</label>
+              <input type="url" id="recipe-image-url" placeholder="https://exemplo.com/imagem.jpg" />
+              <small class="form-hint">Opcional: podes colar um link de imagem. Se escolheres um ficheiro, o link é ignorado.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="recipe-image-file">Imagem (ficheiro do PC)</label>
+              <input type="file" id="recipe-image-file" accept="image/*" />
+              <small class="form-hint">A imagem é guardada no Firestore como base64 (sem Storage). Recomendado: imagens pequenas.</small>
+              <img id="recipe-image-preview" class="preview-image hidden mt-075" alt="Pré-visualização" />
+            </div>
+
+            <button type="submit" class="btn-primary" id="create-recipe-btn">Criar Receita</button>
+              </form>
+            </div>
+            
+            <!-- Preview Side -->
+            <div class="admin-preview-side">
+              <div class="preview-header">
+                <span class="preview-badge">Pré-visualização</span>
+                <h4>Como vai aparecer na página de Receitas</h4>
+              </div>
+              <div class="preview-card-container">
+                <div id="recipe-live-preview" class="product-card recipe-card preview-card">
+                  <img src="https://via.placeholder.com/300x200?text=Imagem+da+Receita" alt="Preview" class="product-image" id="preview-recipe-image">
+                  <div class="product-content">
+                    <span class="product-category">Receita</span>
+                    <h3 class="product-name" id="preview-recipe-title">Título da Receita</h3>
+                    <p class="product-description" id="preview-recipe-description">Descrição da receita...</p>
+                    <div class="recipe-footer">
+                      <span class="recipe-cta">Ver receita</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Mini ingredients/steps preview -->
+              <div class="preview-details">
+                <div class="preview-detail-section">
+                  <h5>Ingredientes</h5>
+                  <ul id="preview-recipe-ingredients" class="preview-list">
+                    <li class="preview-placeholder">Os ingredientes vão aparecer aqui...</li>
+                  </ul>
+                </div>
+                <div class="preview-detail-section">
+                  <h5>Passos</h5>
+                  <ol id="preview-recipe-steps" class="preview-list">
+                    <li class="preview-placeholder">Os passos vão aparecer aqui...</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-1-5">
+            <h4 class="h4-small">Receitas existentes</h4>
+            <div id="admin-recipes-list" class="admin-list"></div>
+          </div>
+        </div>
+        </div><!-- End Receitas Tab -->
+
+        <!-- Tab: Encomendas -->
+        <div class="admin-tab-content" id="admin-tab-encomendas">
+
+        <!-- Orders Table -->
+        <div class="card">
+          <h3 class="card-title">Todas as Encomendas</h3>
+          
+          <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>A carregar encomendas...</p>
+          </div>
+
+          <div id="admin-orders-list" class="hidden"></div>
+        </div>
+        </div><!-- End Encomendas Tab -->
+
+        <!-- Tab: Descontos -->
+        <div class="admin-tab-content" id="admin-tab-descontos">
+          <div class="card">
+            <h3 class="card-title">Gerir Descontos por Produto</h3>
+            <div id="discounts-list" class="admin-list">
+              <p>Carregando produtos...</p>
+            </div>
+          </div>
+        </div><!-- End Descontos Tab -->
+
+        
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit Product Modal -->
+  <div id="edit-product-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <button type="button" class="modal-close" id="edit-product-close" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-body">
+        <div class="modal-content">
+          <h3 class="modal-title">Editar Produto</h3>
+          <form id="edit-product-form" class="edit-modal-form">
+            <div class="form-group">
+              <label for="edit-product-name">Nome do Produto</label>
+              <input type="text" id="edit-product-name" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="edit-product-price">Preço (€)</label>
+                <input type="number" id="edit-product-price" step="0.01" min="0.01" required>
+              </div>
+              <div class="form-group">
+                <label for="edit-product-category">Categoria</label>
+                <select id="edit-product-category" required>
+                  <option value="bread">Pão</option>
+                  <option value="pastry">Pastelaria</option>
+                  <option value="cake">Bolos</option>
+                  <option value="snacks">Snacks</option>
+                  <option value="drinks">Bebidas</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="edit-product-details">Detalhes do Produto</label>
+              <textarea id="edit-product-details" rows="3" placeholder="Ex: Vendido à unidade. Contém farinha de trigo, ovos e leite."></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit-product-image-url">Imagem (URL)</label>
+              <input type="url" id="edit-product-image-url" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+            <div class="form-group">
+              <label for="edit-product-image-file">Nova imagem (ficheiro)</label>
+              <input type="file" id="edit-product-image-file" accept="image/*">
+              <img id="edit-product-image-preview" class="preview-image hidden" alt="Pré-visualização">
+            </div>
+            <div class="form-group">
+              <label class="flex-gap-8">
+                <input type="checkbox" id="edit-product-out-of-stock">
+                Tirar do stock
+              </label>
+            </div>
+            <div class="form-group" id="edit-product-restock-wrap" class="hidden">
+              <label for="edit-product-restock-estimate">Tempo previsto para voltar</label>
+              <small class="small-muted">Escreva apenas o número de dias</small>
+              <input type="number" id="edit-product-restock-estimate" placeholder="Ex: 2" min="1" max="365">
+            </div>
+            <input type="hidden" id="edit-product-id">
+            <div class="edit-modal-actions">
+              <button type="button" class="btn-secondary" id="edit-product-cancel">Cancelar</button>
+              <button type="submit" class="btn-primary" id="edit-product-save">Guardar Alterações</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Recipe Modal -->
+  <div id="edit-recipe-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <button type="button" class="modal-close" id="edit-recipe-close" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-body">
+        <div class="modal-content">
+          <h3 class="modal-title">Editar Receita</h3>
+          <form id="edit-recipe-form" class="edit-modal-form">
+            <div class="form-group">
+              <label for="edit-recipe-title">Título</label>
+              <input type="text" id="edit-recipe-title" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-recipe-description">Descrição</label>
+              <textarea id="edit-recipe-description" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit-recipe-ingredients">Ingredientes (1 por linha)</label>
+              <textarea id="edit-recipe-ingredients" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit-recipe-steps">Passos (1 por linha)</label>
+              <textarea id="edit-recipe-steps" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="edit-recipe-image-url">Imagem (URL)</label>
+              <input type="url" id="edit-recipe-image-url" placeholder="https://exemplo.com/imagem.jpg">
+            </div>
+            <div class="form-group">
+              <label for="edit-recipe-image-file">Nova imagem (ficheiro)</label>
+              <input type="file" id="edit-recipe-image-file" accept="image/*">
+              <img id="edit-recipe-image-preview" class="preview-image hidden" alt="Pré-visualização">
+            </div>
+            <input type="hidden" id="edit-recipe-id">
+            <div class="edit-modal-actions">
+              <button type="button" class="btn-secondary" id="edit-recipe-cancel">Cancelar</button>
+              <button type="submit" class="btn-primary" id="edit-recipe-save">Guardar Alterações</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

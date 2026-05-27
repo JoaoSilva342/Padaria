@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho de Compras - Padaria Portuguesa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="dark-mode.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
+  
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="logo"><a href="index.html">Padaria Portuguesa</a></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="produtos.html" class="nav-link">Produtos</a>
+          <a href="como-usar.html" class="nav-link">Como usar</a>
+          <a href="receitas.html" class="nav-link">Receitas</a>
+          <a href="sobre.html" class="nav-link">Sobre</a>
+          <a href="orders.html" class="nav-link">Encomendas</a>
+          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          
+          <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
+          <button id="auth-btn" class="btn-secondary"></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main-content">
+    <div class="container">
+      <h2 class="page-title">Carrinho de Compras</h2>
+
+      <!-- Empty Cart State -->
+      <div id="empty-cart" class="empty-cart hidden">
+        <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <h3>O seu carrinho está vazio</h3>
+        <p>Adicione produtos deliciosos ao seu carrinho</p>
+        <a href="produtos.html" class="btn-primary">Ver Produtos</a>
+      </div>
+
+      <!-- Cart Content -->
+      <div id="cart-content" class="cart-layout hidden">
+        <div>
+          <div class="cart-items" id="cart-items"></div>
+
+          <div class="card cart-suggestions hidden" id="cart-suggestions">
+            <h3 class="card-title">Também pode gostar</h3>
+            <p class="card-description">Sugestões automáticas com base no que já está no seu carrinho.</p>
+            <div id="suggestions-grid" class="suggestions-grid"></div>
+          </div>
+        </div>
+
+        <div class="cart-sidebar">
+          <div class="card">
+            <h3 class="card-title">Resumo da Encomenda</h3>
+            
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span id="subtotal">0.00 €</span>
+            </div>
+            <div class="summary-row">
+              <span>Levantamento</span>
+              <span>Em loja</span>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="summary-total">
+              <span>Total</span>
+              <span id="total" class="total-price">0.00 €</span>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <form id="checkout-form" class="checkout-form">
+              <div class="form-group">
+                <label for="customer-name">Nome completo</label>
+                <input type="text" id="customer-name" placeholder="João Silva" required>
+              </div>
+              <div class="form-group">
+                <label for="customer-email">Email</label>
+                <input type="email" id="customer-email" placeholder="joao@exemplo.com" required>
+              </div>
+              
+              <div class="payment-box">
+                <h4 class="payment-title">Pagamento Obrigatório</h4>
+                <p class="form-hint">A encomenda só é confirmada após pagamento por cartão.</p>
+
+                <div class="form-group">
+                  <label for="payment-card-name">Nome no cartão</label>
+                  <input type="text" id="payment-card-name" required>
+                  <div id="payment-card-name-error" class="hidden error-msg">O nome não pode conter números</div>
+                </div>
+
+                <div class="form-group">
+                  <label for="payment-card-number">Número do cartão</label>
+                  <input type="text" id="payment-card-number" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" required>
+                </div>
+
+                <div class="payment-grid">
+                  <div class="form-group">
+                    <label for="payment-card-expiry">Validade</label>
+                    <input type="text" id="payment-card-expiry" inputmode="numeric" maxlength="5" placeholder="MM/AA" required>
+                    <div id="payment-card-expiry-error" class="hidden error-msg">Validade inválida</div>
+                  </div>
+                  <div class="form-group">
+                    <label for="payment-card-cvv">CVV</label>
+                    <input type="text" id="payment-card-cvv" inputmode="numeric" maxlength="4" placeholder="123" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="pickup-date">Dia pretendido</label>
+                <input type="date" id="pickup-date" required>
+                <p class="form-hint" id="pickup-date-hint">As regras de antecedência dependem das categorias no carrinho.</p>
+              </div>
+              <div class="form-group form-group-full">
+                <label for="pickup-time">Hora pretendida</label>
+                <input type="hidden" id="pickup-time" required>
+                <div id="pickup-slots" class="time-slots" aria-live="polite"></div>
+                <p class="form-hint" id="slot-hint">Horário: 09:00-13:00 e 14:30-19:00 (intervalos de 30 min).</p>
+                <p class="form-hint hidden" id="slot-status"></p>
+              </div>
+              <div class="divider"></div>
+              <button type="submit" class="btn-primary btn-full" id="checkout-btn">
+                Finalizar Encomenda
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Modal: Separar Bolos -->
+  <div id="split-cake-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="split-cake-title">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel">
+      <h3 id="split-cake-title">Deseja separar o(s) bolo(s) numa encomenda à parte?</h3>
+      <p id="split-cake-message">No seu carrinho existem bolos que exigem reserva mínima (1 dia para bolos do site; 2 dias para bolos personalizados). Se separar o(s) bolo(s) numa encomenda diferente, os restantes itens poderão ser levantados mais cedo. Deseja mover o(s) bolo(s) para uma encomenda separada?</p>
+      <div class="modal-actions">
+        <button id="split-confirm-btn" class="btn-primary">Sim — Separar o(s) bolo(s)</button>
+        <button id="split-cancel-btn" class="btn-secondary">Não — Manter tudo junto</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Como usar - Padaria Portuguesa</title>
+  <link rel="stylesheet" href="styles.css" />  <script src="dark-mode.js"></script></head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="logo"><a href="index.html">Padaria Portuguesa</a></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Inicio</a>
+          <a href="produtos.html" class="nav-link">Produtos</a>
+          <a href="como-usar.html" class="nav-link active">Como usar</a>
+          <a href="receitas.html" class="nav-link">Receitas</a>
+          <a href="sobre.html" class="nav-link">Sobre</a>
+          <a href="orders.html" class="nav-link">Encomendas</a>
+          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          
+          <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
+          <button id="auth-btn" class="btn-secondary"></button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="main">
+    <div class="container">
+      <h2 class="title">Como usar o site</h2>
+      <p class="subtitle">Guia rápido para clientes — registar, encomendar e pagar.</p>
+
+      <section class="grid-responsive">
+        <article class="card card-padding">
+          <h3>Registar / Entrar</h3>
+          <p>Clique em "Entrar" no canto superior para usar todas as funcionalidades (carrinho, encomendar, avaliações).</p>
+          <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Registar" class="img-responsive" />
+        </article>
+
+        <article class="card card-padding">
+          <h3>Navegar produtos</h3>
+          <p>Use as categorias ou a pesquisa para encontrar produtos. Clique num produto para ver mais imagens, descrição e opções de quantidade.</p>
+          <img src="https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Ver produtos" class="img-responsive" />
+        </article>
+
+        <article class="card card-padding">
+          <h3>Adicionar ao carrinho</h3>
+          <p>No modal do produto escolha a quantidade e clique em "Adicionar ao carrinho". Pode ajustar quantidades no carrinho antes de finalizar.</p>
+          <img src="https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Adicionar ao carrinho" class="img-responsive" />
+        </article>
+
+        <article class="card card-padding">
+          <h3>Rever o carrinho</h3>
+          <p>No carrinho veja subtotal, ajuste quantidades, escolha data/hora de levantamento e verifique preços e descontos aplicados.</p>
+        </article>
+
+        <article class="card card-padding">
+          <h3>Pagamento</h3>
+          <p>Escolha cartão como método, preencha número, validade e CVV. Os campos são validados antes de submeter. Após confirmação verá um resumo da encomenda.</p>
+        </article>
+
+        <article class="card card-padding">
+          <h3>Levantamento</h3>
+          <p>Escolha a data e hora disponíveis para levantar na loja. Traga o e-mail de confirmação ou o número da encomenda.</p>
+        </article>
+
+        <article class="card card-padding">
+          <h3>Avaliações</h3>
+          <p>Pode deixar uma avaliação apenas se já tiver comprado o produto anteriormente — isto ajuda outros clientes.</p>
+        </article>
+
+        <article class="card card-padding">
+          <h3>Ajuda / Contacto</h3>
+          <p>Se tiver problemas use a página "Sobre" para encontrar contactos ou mande-nos um e-mail através do suporte.</p>
+        </article>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    © Padaria Portuguesa
+  </footer>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

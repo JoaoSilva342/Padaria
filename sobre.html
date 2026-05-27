@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conheça a Padaria Portuguesa em Póvoa de Varzim - 40+ anos de tradição, qualidade e pão artesanal fresco. Encomendas online para vir buscar à loja.">
+  <meta name="keywords" content="padaria, pão, Póvoa de Varzim, artesanal, pastelaria">
+  <meta property="og:title" content="Sobre nós - Padaria Portuguesa">
+  <meta property="og:description" content="Conheça a nossa história, valores e equipa dedicada com mais de 40 anos de tradição.">
+  <meta property="og:image" content="https://images.pexels.com/photos/1070946/pexels-photo-1070946.jpeg">
+  
+  <title>Sobre nós - Padaria Portuguesa | Tradição & Qualidade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="dark-mode.js"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar para o conteúdo principal</a>
+  
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="logo"><a href="index.html">Padaria Portuguesa</a></h1>
+        <nav class="nav">
+          <a href="index.html" class="nav-link">Início</a>
+          <a href="produtos.html" class="nav-link">Produtos</a>
+          <a href="como-usar.html" class="nav-link">Como usar o site</a>
+          <a href="receitas.html" class="nav-link">Receitas</a>
+          <a href="sobre.html" class="nav-link active">Sobre</a>
+          <a href="orders.html" class="nav-link">Encomendas</a>
+          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          
+          <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
+          <button id="auth-btn" class="btn-secondary"></button>
+          <button id="cart-btn" class="btn-primary cart-btn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count" class="cart-count">0</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main-content">
+    <!-- HERO SECTION COM FUNDO -->
+    <section class="about-hero-section">
+      <div class="container">
+        <div class="about-hero-content">
+          <p class="about-store-kicker">40 anos de história</p>
+          <h1 class="about-hero-title">Somos a Padaria de Toda a Gente</h1>
+          <p class="about-hero-subtitle">
+            Desde 1985 que o Sr. António acorda de madrugada para fazer pão fresco. 
+            Hoje, continuamos com a mesma dedicação — porque aqui, qualidade não é negociável.
+          </p>
+          <div class="about-hero-stats">
+            <div class="stat-box">
+              <span class="stat-number">40+</span>
+              <span class="stat-label">Anos</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-number">Diário</span>
+              <span class="stat-label">Fresco</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-number">1000s</span>
+              <span class="stat-label">Clientes</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-hero-image">
+          <img src="https://images.pexels.com/photos/1070946/pexels-photo-1070946.jpeg?auto=compress&cs=tinysrgb&w=600&h=400" 
+               alt="Interior da Padaria Portuguesa" 
+               class="hero-img"
+               loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- SEÇÃO DE INFORMAÇÕES RÁPIDAS -->
+      <section class="about-quick-info">
+        <h2 class="sr-only">Informações de Contacto</h2>
+        <article class="card about-info-card">
+          <h3 class="card-title">Onde Somos</h3>
+          <p><strong>Rua da Junqueira<br>Póvoa de Varzim</strong></p>
+          <p class="card-description">No centro, onde toda a gente sabe onde é.</p>
+        </article>
+
+        <article class="card about-info-card">
+          <h3 class="card-title">Horário</h3>
+          <ul class="hours-list">
+            <li>Seg-Sex: 07:00 - 19:30</li>
+            <li>Sábado: 07:30 - 19:00</li>
+            <li>Domingo: 08:00 - 13:00</li>
+          </ul>
+        </article>
+
+        <article class="card about-info-card">
+          <h3 class="card-title">Contacta</h3>
+          <p><a href="tel:+351252000000" class="contact-link">+351 252 000 000</a></p>
+          <p><a href="mailto:loja@padariaportuguesa.pt" class="contact-link">loja@padariaportuguesa.pt</a></p>
+          <p class="card-description">Disponível, sem burocracias.</p>
+        </article>
+      </section>
+
+      <!-- SEÇÃO HISTÓRIA SIMPLES -->
+      <section class="about-history-section card card-padding">
+        <h2 class="card-title">Como Começou</h2>
+        <p class="card-description">Tudo começou quando o Sr. António abriu esta loja pequena. Acordava às 4 da manhã, preparava o pão, e abria as portas com o pão ainda quente. Os vizinhos começaram a passar, ficou conhecido no bairro. E cá estamos nós, 40 anos depois, com as mesmas mãos e o mesmo coração.</p>
+      </section>
+
+      <!-- SEÇÃO DE VALORES -->
+      <section class="values-section">
+        <h2 class="section-title">No Que Acreditamos</h2>
+        <div class="values-grid">
+          <article class="card value-card">
+            <h3>Qualidade, Sempre</h3>
+            <p>Não há atalhos aqui. Usamos ingredientes bons, sem compromissos. Quando deitamos um produto fora porque não presta? Dói. Mas é assim que tem de ser.</p>
+          </article>
+
+          <article class="card value-card">
+            <h3>Gente é Tudo</h3>
+            <p>Cada cliente é vizinho. Sabemos os nomes, sabemos os gostos. Quando alguém faz uma encomenda para um aniversário, a gente empenha-se para sair perfeito.</p>
+          </article>
+
+          <article class="card value-card">
+            <h3>Velho e Novo</h3>
+            <p>As receitas da avó funcionam porque são boas. Mas também não somos tolos — quando há uma forma melhor de fazer, experimentamos. O melhor dos dois mundos.</p>
+          </article>
+
+          <article class="card value-card">
+            <h3>Respeito</h3>
+            <p>Respeito pelo ambiente, pelas pessoas, pelos ingredientes. As embalagens são o mínimo que conseguimos manter de forma responsável. Não é tendência, é apenas responsabilidade.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DE EQUIPA MELHORADA -->
+      <section class="about-team-section card">
+        <h2 class="card-title">Quem Fazemos o Pão</h2>
+        <p class="card-description">
+          Não somos muitos, mas somos dedicados. Alguns andam connosco desde o início.
+        </p>
+        
+        <div class="about-team-list">
+          <div class="team-member-card">
+            <div class="team-info">
+              <h4 class="team-name">Sr. António</h4>
+              <p class="team-role">Padeiro-chefe</p>
+              <p class="team-bio">40 anos de madrugadas. Conhece o pão como ninguém. Quando diz que uma fornada está perfeita, está.</p>
+            </div>
+          </div>
+
+          <div class="team-member-card">
+            <div class="team-info">
+              <h4 class="team-name">D. Maria</h4>
+              <p class="team-role">Pasteleira</p>
+              <p class="team-bio">Se pedes um bolo bonito, ela faz. Se pedes um bolo delicioso, ela também faz. Bolos personalizados são a especialidade dela.</p>
+            </div>
+          </div>
+
+          <div class="team-member-card">
+            <div class="team-info">
+              <h4 class="team-name">João</h4>
+              <p class="team-role">Padeiro</p>
+              <p class="team-bio">Filho de um dos antigos, agora continua a tradição. A geração nova do pão fresco. Traz ideias novas, mas respeita o que funciona.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DE DEPOIMENTOS -->
+      <section class="testimonials-section">
+        <h2 class="section-title">O Que Dizem</h2>
+        <div class="testimonials-grid">
+          <article class="card testimonial-card">
+            <p class="testimonial-text">"Compro pão aqui há 10 anos. É a qualidade que me traz. E o Sr. António, quando me vê, já sabe o que é que eu quero."</p>
+            <p class="testimonial-author">— Ana, cliente há 10 anos</p>
+          </article>
+
+          <article class="card testimonial-card">
+            <p class="testimonial-text">"O bolo do meu casamento foi feito pela D. Maria. Bonito, delicioso, e ainda houve quem pedisse a receita. A equipa deles merecia ser mais famosa do que é."</p>
+            <p class="testimonial-author">— Pedro & Filipa</p>
+          </article>
+
+          <article class="card testimonial-card">
+            <p class="testimonial-text">"Passei por aqui por acaso um dia de manhã. Comprei um pastel de nata e pensei: isto é de verdade. Agora venho regularmente, e já recomendei a amigos."</p>
+            <p class="testimonial-author">— Mª Teresa</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DE LOCALIZAÇÃO + MAPA -->
+      <section class="about-location-section card">
+        <h2 class="card-title">Onde Nos Encontras</h2>
+        <p class="card-description">
+          Centro da Póvoa de Varzim, fácil de chegar. Vem provar.
+        </p>
+        
+        <div class="location-grid">
+          <div class="map-wrapper">
+            <iframe
+              title="Mapa da Padaria Portuguesa na Póvoa de Varzim"
+              class="about-store-map"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Rua+da+Junqueira,+P%C3%B3voa+de+Varzim&output=embed">
+            </iframe>
+          </div>
+          
+          <div class="location-details">
+            <h3>Detalhes</h3>
+            <p><strong>Rua da Junqueira<br>Póvoa de Varzim</strong></p>
+            <p><strong>Dicas:</strong></p>
+            <ul>
+              <li>Fica no centro, fácil estacionamento por perto</li>
+              <li>Acessível para todos</li>
+              <li>Entra, cumprimento, leva o que vieste buscar</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO CTA - CHAMADA À AÇÃO -->
+      <section class="cta-section">
+        <h2>Quer Provar?</h2>
+        <p>
+          Encomenda online, vem buscar à loja. Simples, rápido, fresco.
+        </p>
+        <div class="flex-center-wrap">
+          <a href="produtos.html" class="btn-primary btn-hero-primary">
+            Ver o Que Temos
+          </a>
+          <a href="auth.html" class="btn-secondary btn-hero-secondary">
+            Entrar
+          </a>
+        </div>
+      </section>
+
+      <!-- FAQ SECTION -->
+      <section class="faq-section">
+        <h2 class="section-title">Dúvidas?</h2>
+        
+        <div class="faq-container">
+          <details class="faq-item card">
+            <summary class="faq-question">A que horas posso levantar?</summary>
+            <div class="faq-answer">
+              <p><strong>Segunda a Sexta:</strong> 07:00 - 19:30</p>
+              <p><strong>Sábado:</strong> 07:30 - 19:00</p>
+              <p><strong>Domingo:</strong> 08:00 - 13:00</p>
+            </div>
+          </details>
+
+          <details class="faq-item card">
+            <summary class="faq-question">Como encomendar?</summary>
+            <div class="faq-answer">
+              <p>Escolhes o que queres, adicionas ao carrinho, e depois escolhes o dia e a hora que preferires para vir buscar. Preparamos tudo bem feito.</p>
+            </div>
+          </details>
+
+          <details class="faq-item card">
+            <summary class="faq-question">Fazem bolos personalizados?</summary>
+            <div class="faq-answer">
+              <p>Temos uma <a href="bolo-personalizado.html">página completa de bolos personalizados</a> onde podes escolher o sabor, cobertura, e até pedir uma mensagem especial. A D. Maria trata do resto.</p>
+            </div>
+          </details>
+
+          <details class="faq-item card">
+            <summary class="faq-question">Os ingredientes são bons mesmo?</summary>
+            <div class="faq-answer">
+              <p>Sim. Não usamos nada que não usávamos há 20 anos. Sem conservantes desnecessários, sem truques. Pão é água, farinha, sal e fermento. Tudo o mais é marketing.</p>
+            </div>
+          </details>
+
+          <details class="faq-item card">
+            <summary class="faq-question">Posso pagar online?</summary>
+            <div class="faq-answer">
+              <p>Podes pagar por cartão no momento da encomenda. Se preferires, também podes pagar na loja quando vieres buscar.</p>
+            </div>
+          </details>
+
+          <details class="faq-item card">
+            <summary class="faq-question">E se tiver mais dúvidas?</summary>
+            <div class="faq-answer">
+              <p>Liga-nos: <a href="tel:+351252000000">+351 252 000 000</a></p>
+              <p>Ou escreve: <a href="mailto:loja@padariaportuguesa.pt">loja@padariaportuguesa.pt</a></p>
+              <p>Ou simplesmente passa cá. É mais pessoal assim.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script type="module" src="firebase-config.js"></script>
+</body>
+</html>
