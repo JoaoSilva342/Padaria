@@ -4850,15 +4850,67 @@ html.dark-mode textarea::placeholder {
 }
 
 html.dark-mode .custom-check {
-  background: var(--bg-secondary);
+  background: #17120e;
   border-color: var(--border);
+  color: var(--text-primary);
 }
 
-html.dark-mode .custom-field select,
-html.dark-mode .custom-field input {
-  background: var(--input-bg);
-  color: var(--text-primary);
-  border-color: var(--input-border);
+html.dark-mode .custom-check small {
+  color: var(--text-secondary);
+}
+
+html.dark-mode .custom-cake-page .custom-cake-builder-card,
+html.dark-mode .custom-cake-page .custom-cake-config .custom-options-block,
+html.dark-mode .custom-cake-page .custom-cake-summary,
+html.dark-mode .custom-cake-page .cake-preview-container,
+html.dark-mode .custom-cake-page .cake-tabs,
+html.dark-mode .custom-cake-page .cake-tab,
+html.dark-mode .custom-cake-page .cake-tab-content,
+html.dark-mode .custom-cake-page .custom-field input,
+html.dark-mode .custom-cake-page .custom-field textarea,
+html.dark-mode .custom-cake-page .custom-field select,
+html.dark-mode .custom-cake-page .layer-stepper,
+html.dark-mode .custom-cake-page .layer-stepper input,
+html.dark-mode .custom-cake-page .layer-stepper-btn,
+html.dark-mode .custom-cake-page .custom-cake-footer,
+html.dark-mode .custom-cake-page .summary-lines {
+  background: #17120e !important;
+  color: var(--text-primary) !important;
+  border-color: #3d362e !important;
+}
+
+html.dark-mode .custom-cake-page .cake-tab.active,
+html.dark-mode .custom-cake-page .cake-tab:hover {
+  background: #2a241f !important;
+  color: var(--accent) !important;
+}
+
+html.dark-mode .custom-cake-page .summary-row-item,
+html.dark-mode .custom-cake-page .summary-row-item strong,
+html.dark-mode .custom-cake-page .custom-price-label,
+html.dark-mode .custom-cake-page .custom-price-value,
+html.dark-mode .custom-cake-page .preview-title,
+html.dark-mode .custom-cake-page .summary-title,
+html.dark-mode .custom-cake-page .custom-options-title {
+  color: var(--text-primary) !important;
+}
+
+html.dark-mode .custom-cake-page .custom-field select,
+html.dark-mode .custom-cake-page .custom-field input,
+html.dark-mode .custom-cake-page .custom-field textarea {
+  background: #221c16 !important;
+  color: var(--text-primary) !important;
+  border-color: #4a4037 !important;
+}
+
+html.dark-mode .custom-cake-page .layer-stepper-btn {
+  background: #2b231d !important;
+  color: var(--accent) !important;
+}
+
+html.dark-mode .custom-cake-page .layer-stepper input {
+  background: #221c16 !important;
+  color: var(--text-primary) !important;
 }
 
 html.dark-mode .modal {
