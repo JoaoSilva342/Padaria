@@ -305,9 +305,14 @@ html.dark-mode .values-section,
 html.dark-mode .about-team-section,
 html.dark-mode .testimonials-section,
 html.dark-mode .about-location-section {
-  background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(0,0,0,0.03) 100%) !important;
+  background: linear-gradient(180deg, #17120e 0%, #120f0c 100%) !important;
   border-color: var(--border) !important;
   color: var(--text-primary) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.28) !important;
+}
+
+html.dark-mode .card:hover {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 12px 30px rgba(0,0,0,0.34) !important;
 }
 
 /* Headings and paragraphs inside about should be visible */
@@ -3863,175 +3868,6 @@ body {
 .modal-description,
 .recipe-card .product-description {
   color: #111 !important;
-}
-
-.about-showcase {
-  display: grid;
-  gap: 1rem;
-}
-
-.about-showcase-main {
-  position: relative;
-  overflow: hidden;
-  padding: 1.25rem;
-  border-radius: 24px;
-  border: 1px solid rgba(139, 90, 60, 0.18);
-  background: linear-gradient(135deg, #fff7ea 0%, #ffe0b9 100%);
-  box-shadow: 0 20px 40px rgba(139, 90, 60, 0.12);
-  min-height: 280px;
-}
-
-.about-showcase-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.95);
-  color: #8b4513;
-  font-size: 0.85rem;
-  font-weight: 700;
-  box-shadow: 0 8px 18px rgba(139, 90, 60, 0.12);
-}
-
-.about-showcase-illustration {
-  position: relative;
-  height: 190px;
-  margin-top: 1rem;
-}
-
-.bakery-loaf,
-.bakery-cake,
-.bakery-basket {
-  position: absolute;
-  border-radius: 22px;
-  box-shadow: 0 12px 24px rgba(107, 63, 26, 0.16);
-}
-
-.bakery-loaf {
-  left: 2.6rem;
-  top: 3rem;
-  width: 150px;
-  height: 92px;
-  background: linear-gradient(135deg, #d28a2f 0%, #a95d12 100%);
-  transform: rotate(-8deg);
-}
-
-.bakery-loaf::before {
-  content: "";
-  position: absolute;
-  inset: 13px 20px auto;
-  height: 18px;
-  border-radius: 999px;
-  background: #f7d8aa;
-}
-
-.bakery-loaf::after {
-  content: "";
-  position: absolute;
-  left: 20px;
-  bottom: -12px;
-  width: 110px;
-  height: 24px;
-  border-radius: 999px;
-  background: rgba(122, 59, 11, 0.25);
-  filter: blur(2px);
-}
-
-.bakery-cake {
-  right: 2.2rem;
-  top: 2rem;
-  width: 92px;
-  height: 92px;
-  background: linear-gradient(135deg, #fff4de 0%, #f0c06f 100%);
-  border: 3px solid rgba(255, 255, 255, 0.9);
-}
-
-.bakery-cake::before {
-  content: "";
-  position: absolute;
-  inset: 12px 12px auto;
-  height: 18px;
-  border-radius: 999px;
-  background: #b15f13;
-}
-
-.bakery-cake::after {
-  content: "";
-  position: absolute;
-  inset: auto 14px 10px;
-  height: 24px;
-  border-radius: 999px;
-  background: #8b4513;
-}
-
-.bakery-basket {
-  left: 5.2rem;
-  bottom: 0.4rem;
-  width: 120px;
-  height: 70px;
-  background: linear-gradient(135deg, #b8742e 0%, #7d4712 100%);
-  border-radius: 0 0 20px 20px;
-}
-
-.bakery-basket::before {
-  content: "";
-  position: absolute;
-  inset: -10px 16px auto;
-  height: 24px;
-  border-radius: 999px;
-  background: #8a4c14;
-}
-
-.about-showcase-details {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.about-showcase-card {
-  display: flex;
-  gap: 0.8rem;
-  align-items: flex-start;
-  padding: 0.95rem 1rem;
-  border-radius: 16px;
-  background: var(--surface-1);
-  border: 1px solid rgba(139, 90, 60, 0.16);
-  box-shadow: 0 12px 24px rgba(45, 36, 25, 0.06);
-}
-
-.about-showcase-card strong {
-  display: block;
-  margin-bottom: 0.2rem;
-  color: #8b4513;
-}
-
-.about-showcase-card p {
-  margin: 0;
-  color: var(--text-secondary);
-  line-height: 1.45;
-  font-size: 0.95rem;
-}
-
-.about-showcase-icon {
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-html.dark-mode .about-showcase-main {
-  background: linear-gradient(135deg, #3d2d1d 0%, #5a3d23 100%);
-  border-color: rgba(242, 166, 90, 0.24);
-}
-
-html.dark-mode .about-showcase-card {
-  background: rgba(44, 35, 27, 0.92);
-  border-color: rgba(242, 166, 90, 0.22);
-}
-
-html.dark-mode .about-showcase-card strong {
-  color: #ffd8a8;
-}
-
-html.dark-mode .about-showcase-card p {
-  color: #f0e0cc;
 }
 
 .about-info-card .card-description {
