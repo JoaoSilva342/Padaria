@@ -25,15 +25,6 @@ observeAuthState((user) => {
   isAuthenticated = !!user
 })
 
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#039;")
-}
-
 // Popup para login obrigatório
 let loginPopup = null
 function showLoginPopup() {
@@ -45,22 +36,24 @@ function showLoginPopup() {
     const popupAccent = isDarkMode ? '#e89c50' : '#b77b4b'
 
     loginPopup = document.createElement('div')
-    loginPopup.className = 'login-popup-overlay'
-
-    const panel = document.createElement('div')
-    panel.className = 'login-popup-panel'
-    panel.style.setProperty('--login-popup-bg', popupBg)
-    panel.style.setProperty('--login-popup-text', popupText)
-    panel.style.setProperty('--login-popup-muted', popupMutedText)
-    panel.style.setProperty('--login-popup-accent', popupAccent)
-    panel.innerHTML = `
-      <h3 class="login-popup-accent">Faça login para ver a receita completa</h3>
-      <p class="login-popup-muted">Crie uma conta ou entre para ver ingredientes e modo de preparo.</p>
-      <a href="auth.html" class="btn-primary">Fazer Login</a><br>
-      <button id="close-login-popup" class="login-popup-close">Fechar</button>
+    loginPopup.style.position = 'fixed'
+    loginPopup.style.top = '0'
+    loginPopup.style.left = '0'
+    loginPopup.style.width = '100vw'
+    loginPopup.style.height = '100vh'
+    loginPopup.style.background = 'rgba(0,0,0,0.5)'
+    loginPopup.style.display = 'flex'
+    loginPopup.style.alignItems = 'center'
+    loginPopup.style.justifyContent = 'center'
+    loginPopup.style.zIndex = '9999'
+    loginPopup.innerHTML = `
+      <div style="background:${popupBg};color:${popupText};padding:2rem 2.5rem;border-radius:16px;box-shadow:0 2px 16px #0002;text-align:center;max-width:90vw;border:1px solid rgba(139,90,60,0.18);">
+        <h3 style="color:${popupAccent};font-size:1.3rem;margin-bottom:1rem;">Faça login para ver a receita completa</h3>
+        <p style="margin-bottom:1.5rem;color:${popupMutedText};">Crie uma conta ou entre para ver ingredientes e modo de preparo.</p>
+        <a href="auth.html" class="btn-primary" style="padding:0.7em 2em;color:#fff;">Fazer Login</a><br>
+        <button id="close-login-popup" style="margin-top:1.5rem;background:none;border:none;color:${popupAccent};font-size:1.1rem;cursor:pointer;">Fechar</button>
+      </div>
     `
-
-    loginPopup.appendChild(panel)
     document.body.appendChild(loginPopup)
     document.body.style.overflow = 'hidden'
     document.getElementById('close-login-popup').onclick = closeLoginPopup
@@ -103,11 +96,11 @@ function openModal(recipe) {
   const img = getRecipeImage(recipe)
   if (img) {
     modalImage.src = img
-      modalImage.classList.remove('hidden')
+    modalImage.style.display = "block"
     modalImage.alt = recipe.title || "Receita"
   } else {
     modalImage.removeAttribute("src")
-      modalImage.classList.add('hidden')
+    modalImage.style.display = "none"
     modalImage.alt = ""
   }
 
@@ -132,13 +125,13 @@ function openModal(recipe) {
     modalSteps.appendChild(li)
   })
 
-  modalOverlay.classList.remove('hidden')
+  modalOverlay.style.display = "flex"
   modalOverlay.setAttribute("aria-hidden", "false")
   document.body.style.overflow = "hidden"
 }
 
 function closeModal() {
-  modalOverlay.classList.add('hidden')
+  modalOverlay.style.display = "none"
   modalOverlay.setAttribute("aria-hidden", "true")
   document.body.style.overflow = ""
 }
@@ -148,7 +141,7 @@ modalOverlay?.addEventListener("click", (e) => {
   if (e.target === modalOverlay) closeModal()
 })
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && modalOverlay && !modalOverlay.classList.contains('hidden')) closeModal()
+  if (e.key === "Escape" && modalOverlay?.style.display === "flex") closeModal()
 })
 
 async function loadRecipes() {
@@ -160,24 +153,22 @@ async function loadRecipes() {
     loadingEl.style.display = "none"
 
     if (!recipes.length) {
-      emptyEl.classList.remove('hidden')
-      gridEl.classList.add('hidden')
+      emptyEl.style.display = "block"
+      gridEl.style.display = "none"
       return
     }
 
-    emptyEl.classList.add('hidden')
-    gridEl.classList.remove('hidden')
+    emptyEl.style.display = "none"
+    gridEl.style.display = "grid"
 
     gridEl.innerHTML = recipes
       .map((r) => {
         const img = getRecipeImage(r)
-        const safeDesc = escapeHtml(r.description || "")
-        const safeTitle = escapeHtml(r.title || "Receita")
-        const safeId = escapeHtml(r.id)
-        const safeImg = escapeHtml(img || "")
+        const safeDesc = (r.description || "").replace(/</g, "&lt;")
+        const safeTitle = (r.title || "Receita").replace(/</g, "&lt;")
         return `
-          <div class="product-card recipe-card" data-id="${safeId}">
-            <img class="product-image" src="${safeImg}" alt="${safeTitle}" />
+          <div class="product-card recipe-card" data-id="${r.id}">
+            <img class="product-image" src="${img || ""}" alt="${safeTitle}" onerror="this.style.display='none'" />
             <div class="product-content">
               <span class="product-category">Receita</span>
               <h3 class="product-name">${safeTitle}</h3>
@@ -191,10 +182,6 @@ async function loadRecipes() {
       })
       .join("")
 
-      // Attach image error handlers (remove broken images)
-      gridEl.querySelectorAll('.product-image').forEach(img => {
-        img.addEventListener('error', () => img.classList.add('hidden'))
-      })
     // click handlers
     gridEl.querySelectorAll(".recipe-card").forEach((card) => {
       card.addEventListener("click", () => {

@@ -23,38 +23,97 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch {}
 
   // Renderizar cada item com imagem, nome, categoria, descrição, preço unitário e subtotal
-  let itemsHtml = '<div class="order-items-list">'
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+  }
+
+  const listWrap = document.createElement('div')
+  listWrap.className = 'order-items-list'
+
   summary.items.forEach(item => {
-    let prod = products.find(p => p.name === item.name) || {}
-    let img = prod.imageData || prod.image || prod.imageUrl || prod.img || prod.photo || prod.foto || prod.url || prod.picture || "https://images.pexels.com/photos/1070946/pexels-photo-1070946.jpeg?auto=compress&cs=tinysrgb&w=96&h=96&dpr=1"
-    let cat = prod.category || "-"
-    let desc = prod.details || prod.description || ""
-    itemsHtml += `
-      <div class="order-item-card">
-        <img src="${img}" alt="${item.name}" class="order-item-img">
-        <div class="order-item-info">
-          <div class="order-item-header">
-            <span class="order-item-qty">${item.quantity}x</span>
-            <span class="order-item-name">${item.name}</span>
-            <span class="order-item-category">${cat}</span>
-          </div>
-          <div class="order-item-desc">${desc}</div>
-          <div class="order-item-prices">
-            <span class="order-item-unit">${item.price.toFixed(2)} € /un</span>
-            <span class="order-item-subtotal">Subtotal: ${(item.price * item.quantity).toFixed(2)} €</span>
-          </div>
-        </div>
-      </div>
-    `
+    const prod = products.find(p => p.name === item.name) || {}
+    const img = escapeHtml(prod.imageData || prod.image || prod.imageUrl || prod.img || prod.photo || prod.foto || prod.url || prod.picture || "https://images.pexels.com/photos/1070946/pexels-photo-1070946.jpeg?auto=compress&cs=tinysrgb&w=96&h=96&dpr=1")
+    const cat = escapeHtml(prod.category || "-")
+    const desc = escapeHtml(prod.details || prod.description || "")
+
+    const card = document.createElement('div')
+    card.className = 'order-item-card'
+
+    const imgEl = document.createElement('img')
+    imgEl.className = 'order-item-img'
+    imgEl.src = img
+    imgEl.alt = escapeHtml(item.name)
+
+    const info = document.createElement('div')
+    info.className = 'order-item-info'
+
+    const header = document.createElement('div')
+    header.className = 'order-item-header'
+    const qty = document.createElement('span')
+    qty.className = 'order-item-qty'
+    qty.textContent = `${Number(item.quantity)}x`
+    const nameEl = document.createElement('span')
+    nameEl.className = 'order-item-name'
+    nameEl.textContent = item.name
+    const catEl = document.createElement('span')
+    catEl.className = 'order-item-category'
+    catEl.textContent = cat
+
+    header.appendChild(qty)
+    header.appendChild(nameEl)
+    header.appendChild(catEl)
+
+    const descEl = document.createElement('div')
+    descEl.className = 'order-item-desc'
+    descEl.textContent = desc
+
+    const prices = document.createElement('div')
+    prices.className = 'order-item-prices'
+    const unit = document.createElement('span')
+    unit.className = 'order-item-unit'
+    unit.textContent = `${Number(item.price).toFixed(2)} € /un`
+    const subtotal = document.createElement('span')
+    subtotal.className = 'order-item-subtotal'
+    subtotal.textContent = `Subtotal: ${(Number(item.price) * Number(item.quantity)).toFixed(2)} €`
+
+    prices.appendChild(unit)
+    prices.appendChild(subtotal)
+
+    info.appendChild(header)
+    info.appendChild(descEl)
+    info.appendChild(prices)
+
+    card.appendChild(imgEl)
+    card.appendChild(info)
+    listWrap.appendChild(card)
   })
-  itemsHtml += '</div>'
-  orderSummaryItems.innerHTML = itemsHtml
+
+  orderSummaryItems.innerHTML = ''
+  orderSummaryItems.appendChild(listWrap)
 
   // Total
-  orderSummaryTotal.innerHTML = `<strong>Total da encomenda:</strong> <span class="order-total-value">${summary.total.toFixed(2)} €</span>`
+  orderSummaryTotal.textContent = ''
+  const totalStrong = document.createElement('strong')
+  totalStrong.textContent = 'Total da encomenda:'
+  const totalSpan = document.createElement('span')
+  totalSpan.className = 'order-total-value'
+  totalSpan.textContent = `${Number(summary.total).toFixed(2)} €`
+  orderSummaryTotal.appendChild(totalStrong)
+  orderSummaryTotal.appendChild(document.createTextNode(' '))
+  orderSummaryTotal.appendChild(totalSpan)
 
   // Data de levantamento
-  orderSummaryPickup.innerHTML = `<strong>Data de levantamento:</strong> ${summary.pickupDate} às ${summary.pickupTime}`
+  orderSummaryPickup.textContent = ''
+  const pickupStrong = document.createElement('strong')
+  pickupStrong.textContent = 'Data de levantamento:'
+  const pickupText = document.createTextNode(` ${summary.pickupDate} às ${summary.pickupTime}`)
+  orderSummaryPickup.appendChild(pickupStrong)
+  orderSummaryPickup.appendChild(pickupText)
 
   // Limpar o resumo da sessão depois de mostrar
   sessionStorage.removeItem("lastOrderSummary")

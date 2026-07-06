@@ -30,7 +30,7 @@
           <a href="receitas.html" class="nav-link">Receitas</a>
           <a href="sobre.html" class="nav-link active">Sobre</a>
           <a href="orders.html" class="nav-link">Encomendas</a>
-          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          <a href="admin.html" class="nav-link" id="admin-link" style="display: none;">Admin</a>
           
           <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
           <button id="auth-btn" class="btn-secondary"></button>
@@ -49,7 +49,7 @@
 
   <main class="main" id="main-content">
     <!-- HERO SECTION COM FUNDO -->
-    <section class="about-hero-section">
+    <section class="about-hero-section" style="background: linear-gradient(135deg, rgba(193, 123, 58, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%); position: relative; overflow: hidden;">
       <div class="container">
         <div class="about-hero-content">
           <p class="about-store-kicker">40 anos de história</p>
@@ -110,14 +110,14 @@
       </section>
 
       <!-- SEÇÃO HISTÓRIA SIMPLES -->
-      <section class="about-history-section card card-padding">
-        <h2 class="card-title">Como Começou</h2>
-        <p class="card-description">Tudo começou quando o Sr. António abriu esta loja pequena. Acordava às 4 da manhã, preparava o pão, e abria as portas com o pão ainda quente. Os vizinhos começaram a passar, ficou conhecido no bairro. E cá estamos nós, 40 anos depois, com as mesmas mãos e o mesmo coração.</p>
+      <section class="about-history-section card" style="margin: 0.5rem 0; padding: 1rem;">
+        <h2 class="card-title" style="font-size: 1.3rem; margin-bottom: 0.8rem;">Como Começou</h2>
+        <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem;">Tudo começou quando o Sr. António abriu esta loja pequena. Acordava às 4 da manhã, preparava o pão, e abria as portas com o pão ainda quente. Os vizinhos começaram a passar, ficou conhecido no bairro. E cá estamos nós, 40 anos depois, com as mesmas mãos e o mesmo coração.</p>
       </section>
 
       <!-- SEÇÃO DE VALORES -->
-      <section class="values-section">
-        <h2 class="section-title">No Que Acreditamos</h2>
+      <section class="values-section" style="margin: 3rem 0;">
+        <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">No Que Acreditamos</h2>
         <div class="values-grid">
           <article class="card value-card">
             <h3>Qualidade, Sempre</h3>
@@ -142,9 +142,9 @@
       </section>
 
       <!-- SEÇÃO DE EQUIPA MELHORADA -->
-      <section class="about-team-section card">
-        <h2 class="card-title">Quem Fazemos o Pão</h2>
-        <p class="card-description">
+      <section class="about-team-section card" style="margin: 3rem 0;">
+        <h2 class="card-title" style="font-size: 2rem; margin-bottom: 0.5rem;">Quem Fazemos o Pão</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">
           Não somos muitos, mas somos dedicados. Alguns andam connosco desde o início.
         </p>
         
@@ -176,8 +176,8 @@
       </section>
 
       <!-- SEÇÃO DE DEPOIMENTOS -->
-      <section class="testimonials-section">
-        <h2 class="section-title">O Que Dizem</h2>
+      <section class="testimonials-section" style="margin: 3rem 0;">
+        <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">O Que Dizem</h2>
         <div class="testimonials-grid">
           <article class="card testimonial-card">
             <p class="testimonial-text">"Compro pão aqui há 10 anos. É a qualidade que me traz. E o Sr. António, quando me vê, já sabe o que é que eu quero."</p>
@@ -197,9 +197,9 @@
       </section>
 
       <!-- SEÇÃO DE LOCALIZAÇÃO + MAPA -->
-      <section class="about-location-section card">
-        <h2 class="card-title">Onde Nos Encontras</h2>
-        <p class="card-description">
+      <section class="about-location-section card" style="margin: 3rem 0;">
+        <h2 class="card-title" style="font-size: 1.8rem; margin-bottom: 1rem;">Onde Nos Encontras</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
           Centro da Póvoa de Varzim, fácil de chegar. Vem provar.
         </p>
         
@@ -215,10 +215,10 @@
           </div>
           
           <div class="location-details">
-            <h3>Detalhes</h3>
+            <h3 style="margin-bottom: 1rem;">Detalhes</h3>
             <p><strong>Rua da Junqueira<br>Póvoa de Varzim</strong></p>
-            <p><strong>Dicas:</strong></p>
-            <ul>
+            <p style="margin-top: 1rem;"><strong>Dicas:</strong></p>
+            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
               <li>Fica no centro, fácil estacionamento por perto</li>
               <li>Acessível para todos</li>
               <li>Entra, cumprimento, leva o que vieste buscar</li>
@@ -228,24 +228,24 @@
       </section>
 
       <!-- SEÇÃO CTA - CHAMADA À AÇÃO -->
-      <section class="cta-section">
-        <h2>Quer Provar?</h2>
-        <p>
+      <section class="cta-section" style="background: linear-gradient(135deg, #c17b3a 0%, #8b4513 100%); border-radius: 16px; padding: 3rem 2rem; color: white; text-align: center; margin: 3rem 0;">
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Quer Provar?</h2>
+        <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.95;">
           Encomenda online, vem buscar à loja. Simples, rápido, fresco.
         </p>
-        <div class="flex-center-wrap">
-          <a href="produtos.html" class="btn-primary btn-hero-primary">
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="produtos.html" class="btn-primary" style="padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
             Ver o Que Temos
           </a>
-          <a href="auth.html" class="btn-secondary btn-hero-secondary">
+          <a href="auth.html" class="btn-secondary" style="padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; background: rgba(255,255,255,0.2); color: white; border-color: white;">
             Entrar
           </a>
         </div>
       </section>
 
       <!-- FAQ SECTION -->
-      <section class="faq-section">
-        <h2 class="section-title">Dúvidas?</h2>
+      <section class="faq-section" style="margin: 3rem 0;">
+        <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Dúvidas?</h2>
         
         <div class="faq-container">
           <details class="faq-item card">

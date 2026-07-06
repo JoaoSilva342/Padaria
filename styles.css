@@ -1,5 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+.captcha-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(139, 90, 60, 0.16);
+  border-radius: 12px;
+  background: rgba(255, 248, 240, 0.9);
+}
+
+.captcha-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(139, 90, 60, 0.16);
+  border-radius: 12px;
+  background: rgba(255, 248, 240, 0.9);
+}
+
+.captcha-box .g-recaptcha {
+  transform: scale(1.02);
+  transform-origin: 0 0;
+  margin-top: 0.2rem;
+}
+
+.captcha-box .form-hint {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #6b4d2f;
+}
+
+@media (max-width: 480px) {
+  .captcha-box {
+    padding: 0.65rem 0.7rem;
+  }
+
+  .captcha-box .g-recaptcha {
+    transform: scale(0.95);
+  }
+}
+
 /* Order Summary Styles */
 .order-summary-card {
   background: #fff8f0;
@@ -125,6 +169,7 @@
 }
 
 :root {
+  font-size: 16px;
   /* Colors - Warm bakery palette (Light mode) */
   --bg-primary: #faf8f5;
   --bg-secondary: #ffffff;
@@ -160,6 +205,23 @@
   --radius-full: 9999px;
 }
 
+body {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+p,
+li,
+label,
+.form-hint,
+.card-description,
+.subtitle,
+.text-muted,
+.product-description,
+.nav-link {
+  font-size: 1.02rem;
+}
+
 /* Dark mode */
 html.dark-mode {
   --bg-primary: #1a1410;
@@ -174,6 +236,99 @@ html.dark-mode {
   --accent: #e89c50;
   --input-bg: #2a2420;
   --input-border: #3d362e;
+}
+
+/* Strong dark-mode text overrides: make site text readable (white) and important items highlighted */
+html.dark-mode, html.dark-mode body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Force most text to use the dark-mode text color (override hardcoded blacks) */
+html.dark-mode body,
+html.dark-mode body * {
+  color: var(--text-primary) !important;
+}
+
+/* Keep icons and borders subtle */
+html.dark-mode svg, html.dark-mode img { color: inherit; }
+
+/* Highlight important items with the accent color */
+html.dark-mode h1,
+html.dark-mode h2,
+html.dark-mode h3,
+html.dark-mode h4,
+html.dark-mode h5,
+html.dark-mode h6,
+html.dark-mode .title,
+html.dark-mode .page-title,
+html.dark-mode .product-name,
+html.dark-mode .product-price,
+html.dark-mode .order-summary-total,
+html.dark-mode .order-total-value,
+html.dark-mode .btn-primary,
+html.dark-mode .tab-btn.active,
+html.dark-mode .add-to-cart-btn {
+  color: var(--accent) !important;
+}
+
+/* Links should be accent, but keep underline behavior */
+html.dark-mode a {
+  color: var(--accent) !important;
+}
+
+/* Ensure muted text stays readable but subdued */
+html.dark-mode .text-muted,
+html.dark-mode .product-description,
+html.dark-mode .subtitle,
+html.dark-mode .prep-badge-muted {
+  color: var(--text-secondary) !important;
+}
+
+/* Inputs and textareas: readable text on dark backgrounds */
+html.dark-mode input,
+html.dark-mode textarea,
+html.dark-mode select,
+html.dark-mode button {
+  color: var(--text-primary) !important;
+  background: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* Extra: force cards and about sections to dark backgrounds and white text */
+html.dark-mode .card,
+html.dark-mode .about-hero-section,
+html.dark-mode .about-info-card,
+html.dark-mode .about-history-section,
+html.dark-mode .values-section,
+html.dark-mode .about-team-section,
+html.dark-mode .testimonials-section,
+html.dark-mode .about-location-section {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(0,0,0,0.03) 100%) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Headings and paragraphs inside about should be visible */
+html.dark-mode .about-hero-title,
+html.dark-mode .about-hero-subtitle,
+html.dark-mode .card-title,
+html.dark-mode .section-title,
+html.dark-mode .team-name,
+html.dark-mode .team-role,
+html.dark-mode .team-bio,
+html.dark-mode .testimonial-text,
+html.dark-mode .testimonial-author,
+html.dark-mode .about-team-list p,
+html.dark-mode .about-team-list h4 {
+  color: var(--text-primary) !important;
+}
+
+/* Small contact links and details */
+html.dark-mode .contact-link,
+html.dark-mode .location-details strong,
+html.dark-mode .hours-list li {
+  color: var(--text-primary) !important;
 }
 
 /* Global Animations */
@@ -567,72 +722,6 @@ html.dark-mode .header {
   margin-left: 0.6rem;
 }
 
-/* Utility classes used by admin templates */
-.muted-text { color: var(--text-secondary); }
-.ml-8 { margin-left: 8px; }
-.inline-small-input { width: 80px; padding: 6px; }
-.discount-row { margin-top: 8px; display: flex; gap: 8px; align-items: center; }
-.admin-item-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem; }
-.user-actions { display: flex; gap: 0.5rem; }
-/* Spacing utilities */
-.mb-2 { margin-bottom: 2rem; }
-.mb-1 { margin-bottom: 1rem; }
-.mt-1-5 { margin-top: 1.5rem; }
-.mt-075 { margin-top: 0.75rem; }
-.flex-gap-8 { display:flex; align-items:center; gap:8px; }
-.small-muted { color: var(--text-secondary); margin-top: 4px; display: block; }
-.h4-small { font-size: 1.1rem; margin-bottom: 0.75rem; }
-.owner-badge { color: gold; font-size: 0.75rem; margin-left: 0.5rem; }
-.select-compact { padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); }
-.btn-compact { padding: 0.25rem 0.75rem; font-size: 0.85rem; }
-.not-editable { color: var(--text-secondary); font-size: 0.85rem; }
-.mt-06 { margin-top: 0.6rem; }
-.muted-small { color: var(--text-secondary); margin-top: 6px; font-size: 0.9rem; }
-.error-msg { color: #b71c1c; font-size: 0.95rem; margin-top: 2px; }
-
-/* How-to page utilities */
-.grid-responsive { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 1rem; }
-.card-padding { padding: 1rem; }
-.img-responsive { width: 100%; border-radius: 8px; margin-top: 0.5rem; }
-.site-footer { padding: 2rem 0; text-align: center; color: var(--text-secondary); }
-
-/* Product card helpers */
-.product-image-wrapper { position: relative; }
-.product-card.out-of-stock .product-image { filter: grayscale(1) brightness(0.8); opacity: 0.7; }
-.restock-msg { color: #8b4513; font-size: 1rem; margin: 6px 0 0 0; }
-.restock-days { font-size: 0.75rem; }
-
-/* Modal & form helpers */
-.modal-actions-flex { display:flex; gap:12px; align-items:center; }
-.label-qty { font-size: 1rem; }
-.input-compact { width: 60px; padding: 4px 6px; font-size: 1rem; border-radius: 4px; border: 1px solid #ccc; }
-.textarea-styled { width: 100%; resize: vertical; border-radius: 4px; border: 1px solid #ccc; padding: 6px; }
-
-/* Login popup (created dynamically) */
-.login-popup-overlay {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; display:flex; align-items:center; justify-content:center; z-index:9999;
-}
-.login-popup-panel {
-  background: var(--login-popup-bg, #fff8f0);
-  color: var(--login-popup-text, #222);
-  padding: 2rem 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
-  text-align: center;
-  max-width: 90vw;
-  border: 1px solid rgba(139,90,60,0.18);
-}
-.login-popup-accent { color: var(--login-popup-accent, #b77b4b); font-size: 1.3rem; margin-bottom: 1rem; }
-.login-popup-muted { color: var(--login-popup-muted, #555); margin-bottom: 1.5rem; }
-.login-popup-close { margin-top:1.5rem; background:none; border:none; cursor:pointer; }
-
-/* Small layout helpers */
-.flex-center-wrap { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
-
-/* Form helpers */
-.form-column-gap { display:flex; flex-direction: column; gap: 0.5rem; }
-.mt-1 { margin-top: 0.5rem; }
-
 /* Products Grid */
 .products-grid {
   display: grid;
@@ -862,6 +951,33 @@ html.dark-mode .header {
   padding: 1rem 1.15rem;
   background: linear-gradient(135deg, #8b5a3c 0%, #a66a43 100%);
   color: #fff;
+}
+
+/* Dark-mode specific tweaks for badges and product cards to improve contrast */
+html.dark-mode .product-category {
+  background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: none;
+}
+
+/* Make product cards more pronounced in dark mode and reduce harsh orange highlights */
+html.dark-mode .product-card {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, rgba(0,0,0,0.03) 100%);
+  border-color: rgba(61,54,46,0.6);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+}
+
+html.dark-mode .product-card::before {
+  background: linear-gradient(90deg, rgba(193,123,58,0.12), rgba(225,165,90,0.06));
+}
+
+/* Slightly tone down the accent badges for preview/other small badges */
+html.dark-mode .preview-badge,
+html.dark-mode .product-modal-discount-badge,
+html.dark-mode .product-discount-hours {
+  background: rgba(193,123,58,0.14);
+  color: var(--text-primary);
 }
 
 .custom-cake-badge {
@@ -3119,31 +3235,6 @@ html.dark-mode .header {
   gap: 0.75rem;
 }
 
-/* Small helper classes used by JS-generated content */
-.item-image-empty {
-  display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--text-muted);background:transparent;border-radius:4px;height:80px;width:120px;
-}
-.hidden { display: none !important; }
-
-/* Stock badge used in product cards */
-.stock-badge {
-  position:absolute;top:10px;left:10px;padding:0.3em 0.8em;border-radius:8px;font-weight:bold;font-size:1em;z-index:2;background:var(--badge-bg, #ccc);color:var(--badge-color, #111);
-}
-
-/* Badge styles for admin lists */
-.badge {
-  display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.75rem;color:#fff;
-}
-.badge-admin { background: var(--primary); }
-.badge-staff { background: var(--secondary); }
-
-/* Disabled primary button */
-.btn-primary[disabled] {
-  background: #ccc !important;
-  cursor: not-allowed !important;
-  color: #666 !important;
-}
-
 .toast {
   min-width: 320px;
   max-width: 420px;
@@ -4389,6 +4480,21 @@ html.dark-mode .order-card {
   border-color: #3d362e;
 }
 
+/* Exception: value cards should be light with dark text even in dark mode */
+html.dark-mode .value-card {
+  background: linear-gradient(180deg, #fffdf9 0%, #fff8f0 100%) !important;
+  border-color: #e8d7c3 !important;
+  color: #111 !important;
+}
+
+html.dark-mode .value-card h3 {
+  color: var(--accent) !important;
+}
+
+html.dark-mode .value-card p {
+  color: #2d2419 !important;
+}
+
 html.dark-mode .tabs-auth {
   background: #2f2924;
   background: linear-gradient(180deg, #2a2420 0%, #231e1b 100%);
@@ -4431,6 +4537,22 @@ html.dark-mode .team-member-card {
   color: var(--text-primary);
 }
 
+/* Make the front-page highlight cards readable in dark mode: light card, dark body text */
+html.dark-mode .highlight-card,
+html.dark-mode .highlight-content {
+  background: linear-gradient(180deg, #fffdf9 0%, #fff8f0 100%) !important;
+  border: 1px solid #e8d7c3 !important;
+  color: #111 !important;
+}
+
+html.dark-mode .highlight-title {
+  color: var(--accent) !important;
+}
+
+html.dark-mode .highlight-description {
+  color: #2d2419 !important;
+}
+
 html.dark-mode .team-member-card .team-role,
 html.dark-mode .team-member-card .team-bio {
   color: var(--text-secondary);
@@ -4465,6 +4587,42 @@ html.dark-mode .faq-item {
 html.dark-mode .cta-section {
   background: linear-gradient(135deg, #5c3518 0%, #352116 100%) !important;
   color: #f8f2ed !important;
+}
+
+/* Fix CTA layout in dark mode: ensure subtitle visible and buttons don't overlap */
+html.dark-mode .cta-section {
+  position: relative !important;
+  padding: 2.2rem 1.5rem !important;
+  overflow: visible !important;
+}
+
+html.dark-mode .cta-section p {
+  margin-bottom: 1.25rem !important;
+  color: var(--text-primary) !important;
+  position: relative;
+  z-index: 3;
+}
+
+/* Ensure action buttons sit below text and are centered with spacing */
+html.dark-mode .cta-section > div {
+  display: flex !important;
+  gap: 1rem !important;
+  justify-content: center !important;
+  margin-top: 0.6rem !important;
+  position: relative;
+  z-index: 2;
+}
+
+html.dark-mode .cta-section .btn-primary,
+html.dark-mode .cta-section .btn-secondary {
+  z-index: 2;
+}
+
+/* Make primary button slightly translucent in dark mode to avoid blocking text contrast */
+html.dark-mode .cta-section .btn-primary {
+  background: linear-gradient(135deg, rgba(225,165,90,0.14) 0%, rgba(139,90,60,0.12) 100%);
+  border-color: rgba(255,255,255,0.06);
+  color: var(--text-primary) !important;
 }
 
 html.dark-mode .cta-section .btn-secondary {

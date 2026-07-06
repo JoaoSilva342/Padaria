@@ -1,17 +1,17 @@
-import { showToast, updateCartCount, auth } from "./firebase-config.js"
+import { showToast, updateCartCount, auth, observeAuthState } from "./firebase-config.js"
 
 const MAX_LAYERS = 30
 const MAX_VISUAL_INGREDIENTS = 6
 
 // Real cake images by base type (Unsplash - hotlink allowed)
 const cakeBaseImages = {
-  vanilla: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop",
+  Baunilha: "https://www.receiteria.com.br/wp-content/uploads/2021/08/bolo-de-baunilha.jpeg",
   chocolate: "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&h=400&fit=crop",
   red_velvet: "https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?w=400&h=400&fit=crop",
   carrot: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4p6mcKQDW2z2cH7xBpAouCfPt96X6nSUVrBL3FR6y3QMaywVIKrBy1blIsguc0GDJGPLBQRiU-JCq9aCAe4G9SoQKecwgnAYkeVif-7OEmQ&s=10",
-  lemon: "https://images.unsplash.com/photo-1635712506253-13f4b902f0f0?w=400&h=400&fit=crop",
-  almond: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&h=400&fit=crop",
-  orange: "https://images.unsplash.com/photo-1557925923-cd4648e211a0?w=400&h=400&fit=crop"
+  lemon: "https://images.pexels.com/photos/8275165/pexels-photo-8275165.jpeg?auto=compress&cs=tinysrgb&w=400",
+  almond: "https://images.pexels.com/photos/5801041/pexels-photo-5801041.jpeg?auto=compress&cs=tinysrgb&w=400",
+  orange: "https://images.pexels.com/photos/4006151/pexels-photo-4006151.jpeg?auto=compress&cs=tinysrgb&w=400"
 }
 
 // Real ingredient overlay images (transparent or composable)
@@ -119,6 +119,59 @@ const customCakeOptions = {
 }
 
 let lastValidLayers = 3
+let isAuthenticated = false
+let loginPopup = null
+let initialized = false
+
+function showLoginPopup() {
+  if (!loginPopup) {
+    const isDarkMode = document.documentElement.classList.contains('dark-mode')
+    const popupBg = isDarkMode ? '#2a2420' : '#fff8f0'
+    const popupText = isDarkMode ? '#f5f1ed' : '#222'
+    const popupMutedText = isDarkMode ? '#ccc5bd' : '#555'
+    const popupAccent = isDarkMode ? '#e89c50' : '#b77b4b'
+
+    loginPopup = document.createElement('div')
+    loginPopup.style.position = 'fixed'
+    loginPopup.style.top = '0'
+    loginPopup.style.left = '0'
+    loginPopup.style.width = '100vw'
+    loginPopup.style.height = '100vh'
+    loginPopup.style.background = 'rgba(0,0,0,0.5)'
+    loginPopup.style.display = 'flex'
+    loginPopup.style.alignItems = 'center'
+    loginPopup.style.justifyContent = 'center'
+    loginPopup.style.zIndex = '9999'
+    loginPopup.innerHTML = `
+      <div style="background:${popupBg};color:${popupText};padding:2rem 2.5rem;border-radius:16px;box-shadow:0 2px 16px #0002;text-align:center;max-width:90vw;border:1px solid rgba(139,90,60,0.18);">
+        <h3 style="color:${popupAccent};font-size:1.3rem;margin-bottom:1rem;">Faça login para personalizar bolos</h3>
+        <p style="margin-bottom:1.5rem;color:${popupMutedText};">Crie uma conta ou entre para usar o construtor de bolos personalizados.</p>
+        <a href="auth.html" class="btn-primary" style="padding:0.7em 2em;color:#fff;">Fazer Login</a><br>
+        <button id="close-login-popup" style="margin-top:1.5rem;background:none;border:none;color:${popupAccent};font-size:1.1rem;cursor:pointer;">Fechar</button>
+      </div>
+    `
+    document.body.appendChild(loginPopup)
+    document.body.style.overflow = 'hidden'
+    document.getElementById('close-login-popup').onclick = closeLoginPopup
+    loginPopup.onclick = function(e) {
+      if (e.target === loginPopup) closeLoginPopup()
+    }
+    document.addEventListener('keydown', escLoginPopup)
+  }
+}
+
+function closeLoginPopup() {
+  if (loginPopup) {
+    loginPopup.remove()
+    loginPopup = null
+    document.body.style.overflow = ''
+    document.removeEventListener('keydown', escLoginPopup)
+  }
+}
+
+function escLoginPopup(e) {
+  if (e.key === 'Escape') closeLoginPopup()
+}
 
 function formatPrice(value) {
   return `${Number(value).toFixed(2)} €`
@@ -237,40 +290,45 @@ function renderVisualPreview(selection) {
   const numLayers = Math.min(selection.layers || 1, 3)
   
   // Build layers indicator
-  let layersIndicator = ''
-  if (numLayers > 1) {
-    layersIndicator = `<div class="layers-badge">${numLayers} camadas</div>`
-  }
-  
+  const layersIndicator = numLayers > 1 ? `${numLayers} camadas` : ''
+
   // Count selected extras
   const fillingsCount = selection.fillings.length
   const toppingsCount = selection.toppings.length
-  
-  previewStack.innerHTML = `
-    <div class="realistic-cake-preview">
-      <div class="cake-image-container">
-        <img 
-          src="${escapeHtml(layers.baseImg)}" 
-          alt="Bolo de ${escapeHtml(layers.baseLabel)}" 
-          class="cake-main-image"
-          loading="lazy"
-        >
-        ${layersIndicator}
-        <div class="cake-label">${escapeHtml(layers.baseLabel)}</div>
-      </div>
-    </div>
-  `
-  
+
+  // Build preview DOM
+  previewStack.textContent = ''
+  const previewWrap = document.createElement('div')
+  previewWrap.className = 'realistic-cake-preview'
+  const container = document.createElement('div')
+  container.className = 'cake-image-container'
+  const img = document.createElement('img')
+  img.className = 'cake-main-image'
+  img.loading = 'lazy'
+  img.src = layers.baseImg
+  img.alt = `Bolo de ${layers.baseLabel}`
+  container.appendChild(img)
+  if (layersIndicator) {
+    const badge = document.createElement('div')
+    badge.className = 'layers-badge'
+    badge.textContent = layersIndicator
+    container.appendChild(badge)
+  }
+  const label = document.createElement('div')
+  label.className = 'cake-label'
+  label.textContent = layers.baseLabel
+  container.appendChild(label)
+  previewWrap.appendChild(container)
+  previewStack.appendChild(previewWrap)
+
   // Show count info
   const parts = []
   if (fillingsCount > 0) parts.push(`${fillingsCount} recheio${fillingsCount > 1 ? 's' : ''}`)
   if (toppingsCount > 0) parts.push(`${toppingsCount} cobertura${toppingsCount > 1 ? 's' : ''}`)
-  
-  if (parts.length > 0) {
-    previewInfo.innerHTML = `<small>${escapeHtml(parts.join(' • '))}</small>`
-  } else {
-    previewInfo.innerHTML = `<small>${escapeHtml('Personaliza o teu bolo')}</small>`
-  }
+  previewInfo.textContent = ''
+  const small = document.createElement('small')
+  small.textContent = parts.length > 0 ? parts.join(' • ') : 'Personaliza o teu bolo'
+  previewInfo.appendChild(small)
 }
 
 function renderOptions() {
@@ -279,45 +337,67 @@ function renderOptions() {
   const fillingsEl = document.getElementById("custom-fillings")
   const toppingsEl = document.getElementById("custom-toppings")
 
-  baseSelect.innerHTML = customCakeOptions.bases
-    .map((base) => `<option value="${escapeHtml(base.value)}">${escapeHtml(base.label)} (${formatPrice(base.pricePerKg)}/kg)</option>`)
-    .join("")
+  // Populate baseSelect
+  baseSelect.textContent = ''
+  customCakeOptions.bases.forEach((base) => {
+    const opt = document.createElement('option')
+    opt.value = base.value
+    opt.textContent = `${base.label} (${formatPrice(base.pricePerKg)}/kg)`
+    baseSelect.appendChild(opt)
+  })
 
-  shapeSelect.innerHTML = customCakeOptions.shapes
-    .map((shape) => `<option value="${escapeHtml(shape.value)}">${escapeHtml(shape.label)} ${shape.addFixed ? `( +${formatPrice(shape.addFixed)} )` : "(incluído)"}</option>`)
-    .join("")
+  // Populate shapeSelect
+  shapeSelect.textContent = ''
+  customCakeOptions.shapes.forEach((shape) => {
+    const opt = document.createElement('option')
+    opt.value = shape.value
+    opt.textContent = `${shape.label} ${shape.addFixed ? `( +${formatPrice(shape.addFixed)} )` : '(incluído)'}`
+    shapeSelect.appendChild(opt)
+  })
 
-  fillingsEl.innerHTML = customCakeOptions.fillings
-    .map(
-      (item) => `
-      <label class="custom-check">
-        <input type="checkbox" class="custom-cake-filling" value="${escapeHtml(item.value)}">
-        <span>${escapeHtml(item.label)}</span>
-        <small>+${formatPrice(item.addPerKg)}/kg</small>
-      </label>
-    `,
-    )
-    .join("")
-
+  // Populate fillings
+  fillingsEl.textContent = ''
+  customCakeOptions.fillings.forEach((item) => {
+    const label = document.createElement('label')
+    label.className = 'custom-check'
+    const input = document.createElement('input')
+    input.type = 'checkbox'
+    input.className = 'custom-cake-filling'
+    input.value = item.value
+    const span = document.createElement('span')
+    span.textContent = item.label
+    const small = document.createElement('small')
+    small.textContent = `+${formatPrice(item.addPerKg)}/kg`
+    label.appendChild(input)
+    label.appendChild(span)
+    label.appendChild(small)
+    fillingsEl.appendChild(label)
+  })
   // Add limit enforcement for fillings (max 3)
-  fillingsEl.querySelectorAll('.custom-cake-filling').forEach(checkbox => {
+  fillingsEl.querySelectorAll('.custom-cake-filling').forEach((checkbox) => {
     checkbox.addEventListener('change', () => enforceCheckboxLimit('.custom-cake-filling', 3))
   })
 
-  toppingsEl.innerHTML = customCakeOptions.toppings
-    .map(
-      (item) => `
-      <label class="custom-check">
-        <input type="checkbox" class="custom-cake-topping" value="${escapeHtml(item.value)}">
-        <span>${escapeHtml(item.label)}</span>
-        <small>+${formatPrice(item.addFixed)}</small>
-      </label>
-    `,
-    )
-    .join("")
-  
+  // Populate toppings
+  toppingsEl.textContent = ''
+  customCakeOptions.toppings.forEach((item) => {
+    const label = document.createElement('label')
+    label.className = 'custom-check'
+    const input = document.createElement('input')
+    input.type = 'checkbox'
+    input.className = 'custom-cake-topping'
+    input.value = item.value
+    const span = document.createElement('span')
+    span.textContent = item.label
+    const small = document.createElement('small')
+    small.textContent = `+${formatPrice(item.addFixed)}`
+    label.appendChild(input)
+    label.appendChild(span)
+    label.appendChild(small)
+    toppingsEl.appendChild(label)
+  })
   // Add limit enforcement for toppings (max 3)
-  toppingsEl.querySelectorAll('.custom-cake-topping').forEach(checkbox => {
+  toppingsEl.querySelectorAll('.custom-cake-topping').forEach((checkbox) => {
     checkbox.addEventListener('change', () => enforceCheckboxLimit('.custom-cake-topping', 3))
   })
 }
@@ -366,21 +446,33 @@ function updateSummary() {
     .map((v) => customCakeOptions.toppings.find((t) => t.value === v)?.label)
     .filter(Boolean)
 
-  summaryEl.innerHTML = `
-    <div class="summary-row-item"><span>Massa</span><strong>${escapeHtml(baseLabel)}</strong></div>
-    <div class="summary-row-item"><span>Peso</span><strong>${escapeHtml(selection.weight.toFixed(1) + ' kg')}</strong></div>
-    <div class="summary-row-item"><span>Camadas</span><strong>${escapeHtml(String(selection.layers))}</strong></div>
-    <div class="summary-row-item"><span>Formato</span><strong>${escapeHtml(shapeLabel)}</strong></div>
-    <div class="summary-row-item"><span>Recheios</span><strong>${escapeHtml(fillingsLabels.length ? fillingsLabels.join(", ") : "Nenhum extra")}</strong></div>
-    <div class="summary-row-item"><span>Coberturas</span><strong>${escapeHtml(toppingsLabels.length ? toppingsLabels.join(", ") : "Nenhuma extra")}</strong></div>
-    <div class="summary-divider"></div>
-    <div class="summary-row-item"><span>Base</span><strong>${formatPrice(pricing.baseTotal)}</strong></div>
-    <div class="summary-row-item"><span>Recheios</span><strong>${formatPrice(pricing.fillingsTotal)}</strong></div>
-    <div class="summary-row-item"><span>Coberturas</span><strong>${formatPrice(pricing.toppingsTotal)}</strong></div>
-    <div class="summary-row-item"><span>Camadas</span><strong>${formatPrice(pricing.layersTotal)}</strong></div>
-    <div class="summary-row-item"><span>Formato</span><strong>${formatPrice(pricing.shapeTotal)}</strong></div>
-    <div class="summary-row-item"><span>Mensagem</span><strong>${formatPrice(pricing.messageTotal)}</strong></div>
-  `
+  summaryEl.textContent = ''
+  const addRow = (labelText, valueText) => {
+    const row = document.createElement('div')
+    row.className = 'summary-row-item'
+    const span = document.createElement('span')
+    span.textContent = labelText
+    const strong = document.createElement('strong')
+    strong.textContent = valueText
+    row.appendChild(span)
+    row.appendChild(strong)
+    summaryEl.appendChild(row)
+  }
+  addRow('Massa', baseLabel)
+  addRow('Peso', `${selection.weight.toFixed(1)} kg`)
+  addRow('Camadas', String(selection.layers))
+  addRow('Formato', shapeLabel)
+  addRow('Recheios', fillingsLabels.length ? fillingsLabels.join(', ') : 'Nenhum extra')
+  addRow('Coberturas', toppingsLabels.length ? toppingsLabels.join(', ') : 'Nenhuma extra')
+  const divider = document.createElement('div')
+  divider.className = 'summary-divider'
+  summaryEl.appendChild(divider)
+  addRow('Base', formatPrice(pricing.baseTotal))
+  addRow('Recheios', formatPrice(pricing.fillingsTotal))
+  addRow('Coberturas', formatPrice(pricing.toppingsTotal))
+  addRow('Camadas', formatPrice(pricing.layersTotal))
+  addRow('Formato', formatPrice(pricing.shapeTotal))
+  addRow('Mensagem', formatPrice(pricing.messageTotal))
   priceEl.textContent = formatPrice(pricing.total)
   
   // Update visual preview
@@ -457,6 +549,13 @@ function setupTabs() {
 }
 
 function init() {
+  if (initialized) return
+  if (!isAuthenticated) {
+    showLoginPopup()
+    return
+  }
+
+  initialized = true
   renderOptions()
   updateSummary()
   setupTabs()
@@ -514,4 +613,13 @@ function init() {
   document.getElementById("custom-cake-add-btn").addEventListener("click", addCustomCakeToCart)
 }
 
-init()
+// Observe auth state and only initialize page for authenticated users
+observeAuthState((user) => {
+  isAuthenticated = !!user
+  if (isAuthenticated) {
+    closeLoginPopup()
+    init()
+  } else {
+    showLoginPopup()
+  }
+})

@@ -22,7 +22,7 @@
           <a href="receitas.html" class="nav-link active">Receitas</a>
           <a href="sobre.html" class="nav-link">Sobre</a>
           <a href="orders.html" class="nav-link">Encomendas</a>
-          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          <a href="admin.html" class="nav-link" id="admin-link" style="display: none;">Admin</a>
           
           <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
           <button id="auth-btn" class="btn-secondary"></button>
@@ -51,16 +51,16 @@
         <p>A carregar receitas...</p>
       </div>
 
-      <div id="recipes-grid" class="products-grid"></div>
+      <div id="recipes-grid" class="products-grid" style="display: none;"></div>
 
-      <div id="empty-state" class="empty-state hidden">
+      <div id="empty-state" class="empty-state" style="display: none;">
         <p>Ainda não existem receitas.</p>
       </div>
     </div>
   </main>
 
   <!-- Modal -->
-  <div id="recipe-modal" class="modal-overlay hidden" aria-hidden="true">
+  <div id="recipe-modal" class="modal-overlay" style="display:none;" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recipe-modal-title">
       <button id="recipe-modal-close" class="modal-close" aria-label="Fechar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

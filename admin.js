@@ -43,17 +43,6 @@ function parsePickupAt(order) {
   return Number.isNaN(d.getTime()) ? null : d
 }
 
-// Simple HTML escape helper to avoid XSS when inserting user/content-provided strings
-function escapeHtml(str) {
-  if (str === null || str === undefined) return ''
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
-}
-
 function computeAutoStatus(order, now = new Date()) {
   const current = order.status || "pending"
   if (current === "cancelled" || current === "completed") return current
@@ -732,7 +721,7 @@ function updateRecipePreview() {
     }
   }
 
-    if (previewSteps) {
+  if (previewSteps) {
     const stepsList = steps.split("\n").filter(line => line.trim())
     if (stepsList.length > 0) {
       previewSteps.innerHTML = stepsList
@@ -795,29 +784,29 @@ async function loadRecipesAdmin() {
   const listEl = document.getElementById("admin-recipes-list")
   if (!listEl) return
 
-  listEl.innerHTML = '<p class="muted-text">A carregar...</p>'
+  listEl.innerHTML = "<p style=\"color: var(--text-secondary);\">A carregar...</p>"
   try {
     const q = query(collection(db, "recipes"), orderBy("createdAt", "desc"))
     const snap = await getDocs(q)
     const recipes = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
 
     if (!recipes.length) {
-      listEl.innerHTML = '<p class="muted-text">Sem receitas.</p>'
+      listEl.innerHTML = "<p style=\"color: var(--text-secondary);\">Sem receitas.</p>"
       return
     }
 
     listEl.innerHTML = recipes
       .map((r) => {
-        const subtitle = escapeHtml((r.description || "").slice(0, 80))
+        const subtitle = (r.description || "").slice(0, 80)
         return `
           <div class="admin-list-item">
             <div>
-              <h5>${escapeHtml(r.title || "Receita")}</h5>
-              <p>${subtitle}${subtitle.length === 80 ? "..." : ""}</p>
+              <h5>${(r.title || "Receita").replace(/</g, "&lt;")}</h5>
+              <p>${subtitle.replace(/</g, "&lt;")}${subtitle.length === 80 ? "..." : ""}</p>
             </div>
             <div class="item-actions">
-              <button class="btn-edit" data-recipe-edit="${escapeHtml(r.id)}">Editar</button>
-              <button class="btn-danger" data-recipe-delete="${escapeHtml(r.id)}">Apagar</button>
+              <button class="btn-edit" data-recipe-edit="${r.id}">Editar</button>
+              <button class="btn-danger" data-recipe-delete="${r.id}">Apagar</button>
             </div>
           </div>
         `
@@ -852,7 +841,7 @@ async function loadRecipesAdmin() {
     })
   } catch (error) {
     console.error("Erro ao carregar receitas:", error)
-    listEl.innerHTML = '<p class="muted-text">Erro ao carregar receitas.</p>'
+    listEl.innerHTML = "<p style=\"color: var(--text-secondary);\">Erro ao carregar receitas.</p>"
   }
 }
 
@@ -861,7 +850,7 @@ async function loadProductsAdmin() {
   const listEl = document.getElementById("admin-products-list")
   if (!listEl) return
 
-  listEl.innerHTML = '<p class="muted-text">A carregar...</p>'
+  listEl.innerHTML = "<p style=\"color: var(--text-secondary);\">A carregar...</p>"
   try {
     const q = query(collection(db, "products"), orderBy("createdAt", "desc"))
     const snap = await getDocs(q)
@@ -873,7 +862,7 @@ async function loadProductsAdmin() {
     }
 
     if (!products.length) {
-      listEl.innerHTML = '<p class="muted-text">Sem produtos.</p>'
+      listEl.innerHTML = "<p style=\"color: var(--text-secondary);\">Sem produtos.</p>"
       return
     }
 
@@ -887,16 +876,16 @@ async function loadProductsAdmin() {
 
     listEl.innerHTML = products
       .map((p) => {
-        const name = escapeHtml(p.name || "Produto")
-        const category = escapeHtml(categoryLabelsAdmin[p.category] || p.category || "Outro")
-        const details = escapeHtml(p.details || p.description || "")
-        const restockEstimate = escapeHtml(String(p.restockEstimate || ""))
+        const name = (p.name || "Produto").replace(/</g, "&lt;")
+        const category = categoryLabelsAdmin[p.category] || p.category || "Outro"
+        const details = (p.details || p.description || "").replace(/</g, "&lt;")
+        const restockEstimate = String(p.restockEstimate || "").replace(/</g, "&lt;")
         const stockState = p.available === false ? "Fora de stock" : "Em stock"
         const price = typeof p.price === "number" ? p.price.toFixed(2) + " €" : "-"
         const imgSrc = p.imageData || p.image || p.imageUrl || ""
         const imgHtml = imgSrc 
-          ? `<img src="${escapeHtml(imgSrc)}" alt="${name}" class="item-image" />`
-          : `<div class="item-image item-image-empty">Sem img</div>`
+          ? `<img src="${imgSrc}" alt="${name}" class="item-image" />`
+          : `<div class="item-image" style="display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--text-muted);">Sem img</div>`
         
         return `
           <div class="admin-list-item">
@@ -914,8 +903,8 @@ async function loadProductsAdmin() {
             <div class="item-actions">
               <button class="btn-edit" data-product-edit="${p.id}">Editar</button>
               <button class="btn-danger" data-product-delete="${p.id}">Remover</button>
-              <button class="btn-stock ml-8 ${p.available === false ? 'hidden' : ''}" data-product-stock="${escapeHtml(p.id)}">Tirar do stock</button>
-              <button class="btn-stock-in ml-8 ${p.available === false ? '' : 'hidden'}" data-product-stock-in="${escapeHtml(p.id)}">Colocar no stock</button>
+              <button class="btn-stock" data-product-stock="${p.id}" style="margin-left:8px;${p.available === false ? 'display:none;' : ''}">Tirar do stock</button>
+              <button class="btn-stock-in" data-product-stock-in="${p.id}" style="margin-left:8px;${p.available === false ? '' : 'display:none;'}">Colocar no stock</button>
             </div>
           </div>
         `
@@ -988,7 +977,7 @@ async function loadProductsAdmin() {
     })
   } catch (error) {
     console.error("Erro ao carregar produtos:", error)
-    listEl.innerHTML = '<p class="muted-text">Erro ao carregar produtos.</p>'
+    listEl.innerHTML = "<p style=\"color: var(--text-secondary);\">Erro ao carregar produtos.</p>"
   }
 }
 
@@ -997,7 +986,7 @@ async function loadDiscountsAdmin() {
   const listEl = document.getElementById('discounts-list')
   if (!listEl) return
 
-  listEl.innerHTML = '<p class="muted-text">A carregar produtos...</p>'
+  listEl.innerHTML = '<p style="color: var(--text-secondary);">A carregar produtos...</p>'
 
   try {
     const q = query(collection(db, 'products'), orderBy('createdAt', 'desc'))
@@ -1005,15 +994,15 @@ async function loadDiscountsAdmin() {
     const products = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
 
     if (!products.length) {
-      listEl.innerHTML = '<p class="muted-text">Sem produtos.</p>'
+      listEl.innerHTML = '<p style="color: var(--text-secondary);">Sem produtos.</p>'
       return
     }
 
     listEl.innerHTML = products
       .map((p) => {
-        const name = escapeHtml(p.name || 'Produto')
+        const name = (p.name || 'Produto').replace(/</g, '&lt;')
         const imgSrc = p.imageData || p.image || p.imageUrl || ''
-        const current = typeof p.discountPercent === 'number' ? escapeHtml(String(p.discountPercent)) : ''
+        const current = typeof p.discountPercent === 'number' ? String(p.discountPercent) : ''
         // compute remaining days if discountExpires exists
         let currentDays = ''
         if (p.discountExpires) {
@@ -1029,17 +1018,17 @@ async function loadDiscountsAdmin() {
         return `
           <div class="admin-list-item">
             <div class="item-info">
-              ${imgSrc ? `<img src="${escapeHtml(imgSrc)}" alt="${name}" class="item-image" />` : `<div class="item-image item-image-empty">Sem img</div>`}
+              ${imgSrc ? `<img src="${imgSrc}" alt="${name}" class="item-image" />` : `<div class="item-image" style="display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--text-muted);">Sem img</div>`}
               <div class="item-details">
                 <h5>${name}</h5>
-                <div class="discount-row">
-                  <label class="muted-text">Desconto %</label>
-                  <input type="number" min="0" max="100" class="discount-input inline-small-input" data-product-id="${escapeHtml(p.id)}" value="${current}" />
-                  <label class="muted-text">Dias</label>
-                  <input type="number" min="0" max="3650" class="discount-days-input inline-small-input" data-product-id="${escapeHtml(p.id)}" value="${escapeHtml(currentDays)}" />
+                <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+                  <label style="font-size:0.85rem; color:var(--text-secondary);">Desconto %</label>
+                  <input type="number" min="0" max="100" class="discount-input" data-product-id="${p.id}" value="${current}" style="width:80px; padding:6px;" />
+                  <label style="font-size:0.85rem; color:var(--text-secondary);">Dias</label>
+                  <input type="number" min="0" max="3650" class="discount-days-input" data-product-id="${p.id}" value="${currentDays}" style="width:80px; padding:6px;" />
                   <button class="btn-primary btn-small" data-save-discount="${p.id}">Guardar</button>
                 </div>
-                <div class="muted-small">Tempo restante: <span class="discount-remaining" data-discount-expires="${p.discountExpires ? (typeof p.discountExpires.toDate === 'function' ? p.discountExpires.toDate().toISOString() : new Date(p.discountExpires).toISOString()) : ''}">-</span></div>
+                <div style="margin-top:6px; font-size:0.9rem; color:var(--text-secondary);">Tempo restante: <span class="discount-remaining" data-discount-expires="${p.discountExpires ? (typeof p.discountExpires.toDate === 'function' ? p.discountExpires.toDate().toISOString() : new Date(p.discountExpires).toISOString()) : ''}">-</span></div>
               </div>
             </div>
           </div>
@@ -1125,7 +1114,7 @@ async function loadDiscountsAdmin() {
     window._discountAdminTimer = setInterval(updateAdminRemaining, 1000)
   } catch (error) {
     console.error('Erro ao carregar descontos:', error)
-    listEl.innerHTML = '<p class="muted-text">Erro ao carregar produtos.</p>'
+    listEl.innerHTML = '<p style="color: var(--text-secondary);">Erro ao carregar produtos.</p>'
   }
 }
 
@@ -1179,7 +1168,7 @@ async function loadUsersAdmin() {
     return
   }
   
-  listEl.innerHTML = '<p class="muted-text">A carregar utilizadores...</p>'
+  listEl.innerHTML = "<p>A carregar utilizadores...</p>"
   
   try {
     const snapshot = await getDocs(collection(db, "users"))
@@ -1189,7 +1178,7 @@ async function loadUsersAdmin() {
     const staffUsers = users.filter(u => u.role === "admin" || u.role === "staff")
     
     if (staffUsers.length === 0) {
-      listEl.innerHTML = '<p class="muted-text">Nenhum funcionário ou administrador encontrado.</p>'
+      listEl.innerHTML = "<p style='color: var(--text-secondary);'>Nenhum funcionário ou administrador encontrado.</p>"
       return
     }
     
@@ -1199,23 +1188,23 @@ async function loadUsersAdmin() {
       const roleClass = u.role === "admin" ? "badge-admin" : "badge-staff"
       
       return `
-        <div class="admin-item user-item admin-item-row">
+        <div class="admin-item user-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.5rem;">
           <div>
-            <strong>${escapeHtml(u.name || "Sem nome")}</strong>
-            <span class="badge ${roleClass} ml-8">${roleLabel}</span>
-            ${isSuperAdmin ? '<span class="owner-badge">\u2b50 Dono</span>' : ''}
-            <br><small class="small-muted">${escapeHtml(u.email)}</small>
+            <strong>${u.name || "Sem nome"}</strong>
+            <span class="badge ${roleClass}" style="margin-left: 0.5rem; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; background: ${u.role === 'admin' ? 'var(--primary)' : 'var(--secondary)'}; color: white;">${roleLabel}</span>
+            ${isSuperAdmin ? '<span style="margin-left: 0.5rem; color: gold; font-size: 0.75rem;">\u2b50 Dono</span>' : ''}
+            <br><small style="color: var(--text-secondary);">${u.email}</small>
           </div>
           ${!isSuperAdmin ? `
-            <div class="user-actions">
-              <select class="user-role-select select-compact" data-user-id="${escapeHtml(u.id)}">
+            <div style="display: flex; gap: 0.5rem;">
+              <select class="user-role-select" data-user-id="${u.id}" style="padding: 0.25rem 0.5rem; border-radius: 4px; border: 1px solid var(--border);">
                 <option value="staff" ${u.role === 'staff' ? 'selected' : ''}>Funcionário</option>
                 <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Administrador</option>
                 <option value="customer">Remover Acesso</option>
               </select>
-              <button class="btn-primary btn-compact" data-save-user="${escapeHtml(u.id)}">Guardar</button>
+              <button class="btn-primary btn-small" data-save-user="${u.id}" style="padding: 0.25rem 0.75rem; font-size: 0.85rem;">Guardar</button>
             </div>
-          ` : '<span class="not-editable">Não editável</span>'}
+          ` : '<span style="color: var(--text-secondary); font-size: 0.85rem;">Não editável</span>'}
         </div>
       `
     }).join("")
@@ -1336,7 +1325,7 @@ function displayOrders() {
   const visibleOrders = getScopedOrders()
 
   if (!visibleOrders.length) {
-    ordersList.innerHTML = '<p class="muted-text">Sem encomendas para o período selecionado.</p>'
+    ordersList.innerHTML = '<p style="color: var(--text-secondary);">Sem encomendas para o período selecionado.</p>'
     return
   }
 
@@ -1396,13 +1385,13 @@ function displayOrders() {
           <span class="order-total">${order.total.toFixed(2)} €</span>
         </div>
 
-        <div class="admin-order-details hidden" id="admin-order-details-${order.id}">
+        <div class="admin-order-details" id="admin-order-details-${order.id}" style="display:none;">
           <div class="admin-order-details-grid">
             <p><strong>Levantamento:</strong> ${pickupStr}</p>
             <p><strong>Pagamento:</strong> ${paymentStr}${order.cardLast4 ? ` • **** ${order.cardLast4}` : ""}</p>
             <p><strong>ID do cliente:</strong> ${order.userId || "N/D"}</p>
           </div>
-          <div class="form-group mt-06">
+          <div class="form-group" style="margin-top: 0.6rem;">
             <label for="internal-notes-${order.id}">Notas internas</label>
             <textarea id="internal-notes-${order.id}" class="admin-order-notes" rows="3" placeholder="Ex.: cliente pediu sem açúcar...">${notes}</textarea>
           </div>

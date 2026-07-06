@@ -125,10 +125,9 @@ const defaultImages = {
 }
 
 function buildProductCard(product, categoryLabels) {
-  const imageSrcRaw =
+  const imageSrc =
     (product.imageData || product.image || product.imageUrl) ||
     defaultImages[product.category] || defaultImages.default
-  const imageSrc = escapeHtml(imageSrcRaw)
   const category = categoryLabels[product.category] || "Especialidade"
   const name = escapeHtml(product.name || "Produto sem nome")
   const description = escapeHtml(getProductDetailsText(product))
@@ -143,21 +142,23 @@ function buildProductCard(product, categoryLabels) {
   // Fora de stock
   const isOutOfStock = product.available === false
   const restockEstimate = String(product.restockEstimate || "").trim()
-    return `
-    <article class="product-card${isOutOfStock ? ' out-of-stock' : ''}" data-product-id="${escapeHtml(product.id)}" role="button" tabindex="0" aria-label="Ver detalhes de ${name}">
-      <div class="product-image-wrapper">
-        <img src="${imageSrc}" alt="${name}" class="product-image">
-        ${isOutOfStock ? '<span class="stock-badge">Fora de stock</span>' : ''}
+  return `
+    <article class="product-card${isOutOfStock ? ' out-of-stock' : ''}" data-product-id="${product.id}" role="button" tabindex="0" aria-label="Ver detalhes de ${name}">
+      <div class="product-image-wrapper" style="position:relative;">
+        <img src="${imageSrc}" 
+             alt="${name}" 
+             class="product-image" style="${isOutOfStock ? 'filter: grayscale(1) brightness(0.8); opacity:0.7;' : ''}">
+        ${isOutOfStock ? '<span class="stock-badge" style="position:absolute;top:10px;left:10px;background:#ccc;color:#fff;padding:0.3em 0.8em;border-radius:8px;font-weight:bold;font-size:1em;z-index:2;">Fora de stock</span>' : ''}
       </div>
       <div class="product-content">
         <span class="product-category">${category}</span>
         <h3 class="product-name">${name}</h3>
         <p class="product-description">${description}</p>
-        ${isOutOfStock && restockEstimate ? `<p class="restock-msg"><strong>Volta:</strong> aproximadamente ${escapeHtml(restockEstimate)} <span class="restock-days">Dias</span></p>` : ""}
+        ${isOutOfStock && restockEstimate ? `<p style="color:#8b4513;font-size:1rem;margin:6px 0 0 0;"><strong>Volta:</strong> aproximadamente ${escapeHtml(restockEstimate)} <span style="font-size:0.75rem;">Dias</span></p>` : ""}
         <div class="product-footer">
           <span class="product-price">${priceHtml}</span>
           ${discount > 0 ? `<span class="product-discount-hours">${getRemainingHoursLabel(product) || ''}</span>` : ''}
-          <button class="btn-primary add-to-cart-btn" data-id="${escapeHtml(product.id)}" ${isOutOfStock ? 'disabled' : ''}>
+          <button class="btn-primary add-to-cart-btn" data-id="${product.id}" ${isOutOfStock ? 'disabled style="background:#ccc;cursor:not-allowed;"' : ''}>
             ${isOutOfStock ? 'Indisponível' : 'Adicionar'}
           </button>
         </div>
@@ -210,8 +211,7 @@ function openProductModal(productId) {
     if (activeDiscount > 0) {
       const discounted = Number((rawPrice * (1 - activeDiscount / 100)).toFixed(2))
       const hoursLabel = getRemainingHoursLabel(product)
-      const safeHours = hoursLabel ? escapeHtml(hoursLabel) : ''
-      productModalPriceEl.innerHTML = `<span class="product-modal-price-discounted">${formatPrice(discounted)}</span> <span class="product-modal-price-original">${formatPrice(rawPrice)}</span> <span class="product-modal-discount-badge">${escapeHtml(String(activeDiscount))}% desconto</span>${safeHours ? `<span class="product-modal-hours">${safeHours} restantes</span>` : ''}`
+      productModalPriceEl.innerHTML = `<span class="product-modal-price-discounted">${formatPrice(discounted)}</span> <span class="product-modal-price-original">${formatPrice(rawPrice)}</span> <span class="product-modal-discount-badge">${activeDiscount}% desconto</span>${hoursLabel ? `<span class="product-modal-hours">${hoursLabel} restantes</span>` : ''}`
     } else {
       productModalPriceEl.textContent = formatPrice(selectedProductUnitPrice)
     }
@@ -377,6 +377,30 @@ async function loadProducts() {
     filterAndDisplayProducts()
   } catch (error) {
     console.error("[v0] Error loading products:", error)
+    // Tentar fallback para cache local se disponível
+    try {
+      const cached = localStorage.getItem("productsCache")
+      if (cached) {
+        const parsed = JSON.parse(cached)
+        allProducts = parsed.map(p => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          image: p.image || "",
+          category: p.category,
+          details: p.details || ""
+        }))
+
+        loading.style.display = "none"
+        grid.style.display = "grid"
+        showToast("Offline", "A mostrar produtos a partir do cache local.", "info")
+        filterAndDisplayProducts()
+        return
+      }
+    } catch (e) {
+      console.error("Erro a usar cache local:", e)
+    }
+
     loading.innerHTML = "<p>Erro ao carregar produtos. Tente novamente.</p>"
   }
 }

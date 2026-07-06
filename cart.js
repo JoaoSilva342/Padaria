@@ -9,6 +9,7 @@ import {
 let cart = []
 let currentUser = null
 let productsCache = []
+let captchaToken = null
 
 // --- Agendamento (dia/hora) ---
 const pickupDateEl = document.getElementById("pickup-date")
@@ -602,8 +603,10 @@ async function renderSuggestions() {
         default: "https://images.pexels.com/photos/1070946/pexels-photo-1070946.jpeg?auto=compress&cs=tinysrgb&w=280&h=250&dpr=1"
       }
       
-      suggestionsGrid.innerHTML = suggestions
-      .map((product) => {
+      // Build suggestion nodes safely
+      suggestionsGrid.textContent = ''
+      const sugFrag = document.createDocumentFragment()
+      suggestions.forEach((product) => {
         const imageSrcRaw =
           product.imageData ||
           product.image ||
@@ -615,29 +618,53 @@ async function renderSuggestions() {
         const category = categoryMap[product.category] || "Especialidade"
         const price = Number(product.price) || 0
 
-        return `
-          <article class="suggestion-item">
-            <img src="${imageSrc}" alt="${name}" class="suggestion-image">
-            <div class="suggestion-content">
-              <p class="suggestion-category">${category}</p>
-              <h4 class="suggestion-name">${name}</h4>
-              <div class="suggestion-footer">
-                <strong class="suggestion-price">${price.toFixed(2)} €</strong>
-                <button type="button" class="btn-secondary suggestion-add-btn" data-product-id="${escapeHtml(product.id)}">Adicionar</button>
-              </div>
-            </div>
-          </article>
-        `
-      })
-      .join("")
+        const art = document.createElement('article')
+        art.className = 'suggestion-item'
 
-    suggestionsGrid.querySelectorAll(".suggestion-add-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const productId = btn.getAttribute("data-product-id")
-        if (!productId) return
-        addSuggestedProduct(productId)
+        const img = document.createElement('img')
+        img.className = 'suggestion-image'
+        img.src = imageSrc
+        img.alt = name
+
+        const content = document.createElement('div')
+        content.className = 'suggestion-content'
+
+        const pCat = document.createElement('p')
+        pCat.className = 'suggestion-category'
+        pCat.textContent = category
+
+        const h4 = document.createElement('h4')
+        h4.className = 'suggestion-name'
+        h4.textContent = name
+
+        const footer = document.createElement('div')
+        footer.className = 'suggestion-footer'
+
+        const strong = document.createElement('strong')
+        strong.className = 'suggestion-price'
+        strong.textContent = `${price.toFixed(2)} €`
+
+        const btn = document.createElement('button')
+        btn.type = 'button'
+        btn.className = 'btn-secondary suggestion-add-btn'
+        btn.setAttribute('data-product-id', escapeHtml(product.id))
+        btn.textContent = 'Adicionar'
+        btn.addEventListener('click', () => addSuggestedProduct(product.id))
+
+        footer.appendChild(strong)
+        footer.appendChild(btn)
+
+        content.appendChild(pCat)
+        content.appendChild(h4)
+        content.appendChild(footer)
+
+        art.appendChild(img)
+        art.appendChild(content)
+
+        sugFrag.appendChild(art)
       })
-    })
+
+      suggestionsGrid.appendChild(sugFrag)
   } catch (error) {
     console.error("[v0] Error loading suggestions:", error)
     suggestionsWrap.style.display = "none"
@@ -684,54 +711,125 @@ function displayCart() {
   }
 
   const cartItems = document.getElementById("cart-items")
-  cartItems.innerHTML = cart
-    .map((item) => {
-      const prep = getItemPreparationBadge(item)
-      const imgSrcRaw = (item.product.imageData || item.product.image || item.product.imageUrl) || defaultImgs[item.product.category] || defaultImgs.default
-      const imgSrc = escapeHtml(imgSrcRaw)
-      const price = Number(item.product.price) || 0
-      const discount = getActiveDiscount(item.product)
-      const unit = discount > 0 ? Number((price * (1 - discount / 100)).toFixed(2)) : price
-      const priceHtml = discount > 0 ? `<span class="cart-item-price-discounted">${unit.toFixed(2)} €</span> <span class="cart-item-price-original">${price.toFixed(2)} €</span>` : `${unit.toFixed(2)} €`
-      const isPostponed = Boolean(item.postponed)
+  cartItems.textContent = ''
+  const frag = document.createDocumentFragment()
+  cart.forEach((item) => {
+    const prep = getItemPreparationBadge(item)
+    const imgSrcRaw = (item.product.imageData || item.product.image || item.product.imageUrl) || defaultImgs[item.product.category] || defaultImgs.default
+    const imgSrc = escapeHtml(imgSrcRaw)
+    const price = Number(item.product.price) || 0
+    const discount = getActiveDiscount(item.product)
+    const unit = discount > 0 ? Number((price * (1 - discount / 100)).toFixed(2)) : price
+    const isPostponed = Boolean(item.postponed)
 
-      return `
-    <div class="cart-item${isPostponed ? ' postponed' : ''}">
-      <img src="${imgSrc}" 
-           alt="${escapeHtml(item.product.name)}" 
-           class="cart-item-image">
-      <div class="cart-item-content">
-        <h3 class="cart-item-name">${escapeHtml(item.product.name)}</h3>
-        <p class="cart-item-prep"><span class="prep-badge ${prep.className}">${escapeHtml(prep.text)}</span>${isPostponed ? ' <span class="prep-badge prep-badge-muted">Adiado</span>' : ''}</p>
-        <p class="cart-item-description">${escapeHtml(item.product.details || item.product.description || "Sem descrição.")}</p>
-        <p class="cart-item-price">${priceHtml}</p>
-      </div>
-      <div class="cart-item-actions">
-        <button class="remove-btn" data-id="${escapeHtml(item.product.id)}" ${isPostponed ? 'disabled' : ''}>
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          </svg>
-        </button>
-        <div class="quantity-controls">
-          <button class="btn-secondary quantity-btn" data-id="${escapeHtml(item.product.id)}" data-action="decrease" ${isPostponed ? 'disabled' : ''}>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </button>
-          <span class="quantity-value">${item.quantity}</span>
-          <button class="btn-secondary quantity-btn" data-id="${escapeHtml(item.product.id)}" data-action="increase" ${isPostponed ? 'disabled' : ''}>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </button>
-        </div>
-        ${normalizeCategory(item.product.category) === 'cake' ? `<button type="button" class="btn-secondary postpone-btn" data-id="${escapeHtml(item.product.id)}">${isPostponed ? 'Retomar' : 'Deixar para mais tarde'}</button>` : ''}
-      </div>
-    </div>
-  `})
-    .join("")
+    const itemDiv = document.createElement('div')
+    itemDiv.className = `cart-item${isPostponed ? ' postponed' : ''}`
+
+    const img = document.createElement('img')
+    img.className = 'cart-item-image'
+    img.src = imgSrc
+    img.alt = escapeHtml(item.product.name)
+
+    const content = document.createElement('div')
+    content.className = 'cart-item-content'
+
+    const h3 = document.createElement('h3')
+    h3.className = 'cart-item-name'
+    h3.textContent = escapeHtml(item.product.name)
+
+    const pPrep = document.createElement('p')
+    pPrep.className = 'cart-item-prep'
+    const prepSpan = document.createElement('span')
+    prepSpan.className = `prep-badge ${prep.className}`
+    prepSpan.textContent = escapeHtml(prep.text)
+    pPrep.appendChild(prepSpan)
+    if (isPostponed) {
+      const muted = document.createElement('span')
+      muted.className = 'prep-badge prep-badge-muted'
+      muted.textContent = 'Adiado'
+      pPrep.appendChild(document.createTextNode(' '))
+      pPrep.appendChild(muted)
+    }
+
+    const pDesc = document.createElement('p')
+    pDesc.className = 'cart-item-description'
+    pDesc.textContent = escapeHtml(item.product.details || item.product.description || 'Sem descrição.')
+
+    const pPrice = document.createElement('p')
+    pPrice.className = 'cart-item-price'
+    if (discount > 0) {
+      const discSpan = document.createElement('span')
+      discSpan.className = 'cart-item-price-discounted'
+      discSpan.textContent = `${unit.toFixed(2)} €`
+      const origSpan = document.createElement('span')
+      origSpan.className = 'cart-item-price-original'
+      origSpan.textContent = `${price.toFixed(2)} €`
+      pPrice.appendChild(discSpan)
+      pPrice.appendChild(document.createTextNode(' '))
+      pPrice.appendChild(origSpan)
+    } else {
+      pPrice.textContent = `${unit.toFixed(2)} €`
+    }
+
+    content.appendChild(h3)
+    content.appendChild(pPrep)
+    content.appendChild(pDesc)
+    content.appendChild(pPrice)
+
+    const actions = document.createElement('div')
+    actions.className = 'cart-item-actions'
+
+    const removeBtn = document.createElement('button')
+    removeBtn.className = 'remove-btn'
+    removeBtn.setAttribute('data-id', escapeHtml(item.product.id))
+    if (isPostponed) removeBtn.disabled = true
+    removeBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`
+
+    const qtyControls = document.createElement('div')
+    qtyControls.className = 'quantity-controls'
+
+    const decBtn = document.createElement('button')
+    decBtn.className = 'btn-secondary quantity-btn'
+    decBtn.setAttribute('data-id', escapeHtml(item.product.id))
+    decBtn.setAttribute('data-action', 'decrease')
+    if (isPostponed) decBtn.disabled = true
+    decBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>`
+
+    const qtyVal = document.createElement('span')
+    qtyVal.className = 'quantity-value'
+    qtyVal.textContent = String(item.quantity)
+
+    const incBtn = document.createElement('button')
+    incBtn.className = 'btn-secondary quantity-btn'
+    incBtn.setAttribute('data-id', escapeHtml(item.product.id))
+    incBtn.setAttribute('data-action', 'increase')
+    if (isPostponed) incBtn.disabled = true
+    incBtn.innerHTML = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>`
+
+    qtyControls.appendChild(decBtn)
+    qtyControls.appendChild(qtyVal)
+    qtyControls.appendChild(incBtn)
+
+    actions.appendChild(removeBtn)
+    actions.appendChild(qtyControls)
+
+    if (normalizeCategory(item.product.category) === 'cake') {
+      const postponeBtn = document.createElement('button')
+      postponeBtn.type = 'button'
+      postponeBtn.className = 'btn-secondary postpone-btn'
+      postponeBtn.setAttribute('data-id', escapeHtml(item.product.id))
+      postponeBtn.textContent = isPostponed ? 'Retomar' : 'Deixar para mais tarde'
+      actions.appendChild(postponeBtn)
+    }
+
+    itemDiv.appendChild(img)
+    itemDiv.appendChild(content)
+    itemDiv.appendChild(actions)
+
+    frag.appendChild(itemDiv)
+  })
+
+  cartItems.appendChild(frag)
 
   updateSummary()
   attachEventHandlers()
@@ -816,6 +914,18 @@ function togglePostponeItem(productId) {
   showToast(item.postponed ? "Adiado" : "Retomado", item.postponed ? "O produto foi adiado para mais tarde." : "O produto voltou a ser elegível para agendamento.", "success")
 }
 
+window.onCaptchaSuccess = (token) => {
+  captchaToken = token || null
+}
+
+window.onCaptchaExpired = () => {
+  captchaToken = null
+}
+
+function isCaptchaVerified() {
+  return Boolean(captchaToken)
+}
+
 // Checkout
 document.getElementById("checkout-form").addEventListener("submit", async (e) => {
 
@@ -867,6 +977,11 @@ document.getElementById("checkout-form").addEventListener("submit", async (e) =>
   if (!meetsLeadTime(pickupDate, pickupTime, new Date(), cart)) {
     showToast("Antecedência insuficiente", buildPreparationRuleText(getCartPreparationRequirement(cart)), "error")
     await refreshTimeSlots()
+    return
+  }
+
+  if (!isCaptchaVerified()) {
+    showToast("Verificação necessária", "Confirme a proteção anti-bots antes de finalizar a encomenda.", "error")
     return
   }
 

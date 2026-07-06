@@ -18,7 +18,7 @@
           <a href="receitas.html" class="nav-link">Receitas</a>
           <a href="sobre.html" class="nav-link">Sobre</a>
           <a href="orders.html" class="nav-link">Encomendas</a>
-          <a href="admin.html" class="nav-link hidden" id="admin-link">Admin</a>
+          <a href="admin.html" class="nav-link" id="admin-link" style="display: none;">Admin</a>
           
           <button id="theme-toggle" class="theme-toggle" title="Alternar modo escuro" aria-label="Alternar tema">🌙</button>
           <button id="auth-btn" class="btn-secondary"></button>
@@ -32,46 +32,46 @@
       <h2 class="title">Como usar o site</h2>
       <p class="subtitle">Guia rápido para clientes — registar, encomendar e pagar.</p>
 
-      <section class="grid-responsive">
-        <article class="card card-padding">
+      <section style="display:grid; gap:1.25rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top:1rem;">
+        <article class="card" style="padding:1rem;">
           <h3>Registar / Entrar</h3>
           <p>Clique em "Entrar" no canto superior para usar todas as funcionalidades (carrinho, encomendar, avaliações).</p>
-          <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Registar" class="img-responsive" />
+          <img src="https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Registar" style="width:100%; border-radius:8px; margin-top:0.5rem;" />
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Navegar produtos</h3>
           <p>Use as categorias ou a pesquisa para encontrar produtos. Clique num produto para ver mais imagens, descrição e opções de quantidade.</p>
-          <img src="https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Ver produtos" class="img-responsive" />
+          <img src="https://images.pexels.com/photos/291528/pexels-photo-291528.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Ver produtos" style="width:100%; border-radius:8px; margin-top:0.5rem;" />
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Adicionar ao carrinho</h3>
           <p>No modal do produto escolha a quantidade e clique em "Adicionar ao carrinho". Pode ajustar quantidades no carrinho antes de finalizar.</p>
-          <img src="https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Adicionar ao carrinho" class="img-responsive" />
+          <img src="https://images.pexels.com/photos/302680/pexels-photo-302680.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Adicionar ao carrinho" style="width:100%; border-radius:8px; margin-top:0.5rem;" />
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Rever o carrinho</h3>
           <p>No carrinho veja subtotal, ajuste quantidades, escolha data/hora de levantamento e verifique preços e descontos aplicados.</p>
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Pagamento</h3>
           <p>Escolha cartão como método, preencha número, validade e CVV. Os campos são validados antes de submeter. Após confirmação verá um resumo da encomenda.</p>
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Levantamento</h3>
           <p>Escolha a data e hora disponíveis para levantar na loja. Traga o e-mail de confirmação ou o número da encomenda.</p>
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Avaliações</h3>
           <p>Pode deixar uma avaliação apenas se já tiver comprado o produto anteriormente — isto ajuda outros clientes.</p>
         </article>
 
-        <article class="card card-padding">
+        <article class="card" style="padding:1rem;">
           <h3>Ajuda / Contacto</h3>
           <p>Se tiver problemas use a página "Sobre" para encontrar contactos ou mande-nos um e-mail através do suporte.</p>
         </article>
@@ -80,7 +80,7 @@
     </div>
   </main>
 
-  <footer class="site-footer">
+  <footer style="padding:2rem 0; text-align:center; color:var(--text-secondary);">
     © Padaria Portuguesa
   </footer>
 
