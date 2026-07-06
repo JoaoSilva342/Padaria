@@ -4859,6 +4859,8 @@ html.dark-mode .custom-check small {
   color: var(--text-secondary);
 }
 
+html.dark-mode .custom-cake-page .hero,
+html.dark-mode .custom-cake-page .container,
 html.dark-mode .custom-cake-page .custom-cake-builder-card,
 html.dark-mode .custom-cake-page .custom-cake-config .custom-options-block,
 html.dark-mode .custom-cake-page .custom-cake-summary,
