@@ -6,20 +6,10 @@
   align-items: flex-start;
   gap: 0.45rem;
   padding: 0.75rem 0.85rem;
-  border: 1px solid rgba(139, 90, 60, 0.16);
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: rgba(255, 248, 240, 0.9);
-}
-
-.captcha-box {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.45rem;
-  padding: 0.75rem 0.85rem;
-  border: 1px solid rgba(139, 90, 60, 0.16);
-  border-radius: 12px;
-  background: rgba(255, 248, 240, 0.9);
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 .captcha-box .g-recaptcha {
@@ -31,7 +21,17 @@
 .captcha-box .form-hint {
   font-size: 0.95rem;
   line-height: 1.4;
-  color: #6b4d2f;
+  color: var(--text-secondary);
+}
+
+html.dark-mode .captcha-box {
+  background: #2f2923;
+  border-color: #5a4635;
+}
+
+html.dark-mode .captcha-box .form-hint,
+html.dark-mode .captcha-box strong {
+  color: var(--text-primary);
 }
 
 @media (max-width: 480px) {
@@ -1834,11 +1834,17 @@ html.dark-mode .product-discount-hours {
 }
 
 .payment-box {
-  border: 1px solid #e8d8c2;
+  border: 1px solid var(--border);
   border-radius: 12px;
-  background: #fff8ef;
+  background: var(--bg-secondary);
   padding: 0.85rem;
   margin-top: 0.2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+html.dark-mode .payment-box {
+  background: #2f2923;
+  border-color: #5a4635;
 }
 
 .payment-title {
@@ -1934,17 +1940,31 @@ html.dark-mode .product-discount-hours {
 .time-slot-btn:disabled {
   background: #f2f2f2;
   border-color: #d6d6d6;
-  color: #9a9a9a;
+  color: #7a7a7a;
   cursor: not-allowed;
   opacity: 1;
+}
+
+html.dark-mode .time-slot-btn.blocked,
+html.dark-mode .time-slot-btn:disabled {
+  background: #3b342d;
+  border-color: #5a4635;
+  color: #b9b0a7;
 }
 
 .time-slot-btn.blocked:hover,
 .time-slot-btn:disabled:hover {
   background: #f2f2f2;
   border-color: #d6d6d6;
-  color: #9a9a9a;
+  color: #7a7a7a;
   transform: none;
+}
+
+html.dark-mode .time-slot-btn.blocked:hover,
+html.dark-mode .time-slot-btn:disabled:hover {
+  background: #3b342d;
+  border-color: #5a4635;
+  color: #b9b0a7;
 }
 
 .slots-empty {
@@ -2036,7 +2056,12 @@ html.dark-mode .product-discount-hours {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 0.55rem;
-  background: #fffaf4;
+  background: var(--bg-secondary);
+}
+
+html.dark-mode .suggestion-item {
+  background: #2f2923;
+  border-color: #5a4635;
 }
 
 .suggestion-image {
