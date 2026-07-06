@@ -1939,10 +1939,10 @@ html.dark-mode .payment-box label {
 }
 
 .time-slot-btn.selected {
-  background: linear-gradient(135deg, var(--primary) 0%, #a56d43 100%);
-  border-color: var(--primary);
-  color: #fff;
-  box-shadow: 0 6px 14px rgba(111, 71, 48, 0.25);
+  background: var(--bg-secondary);
+  border: 2px solid #c17b3a;
+  color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(193, 123, 58, 0.2);
 }
 
 .time-slot-btn.blocked,
@@ -1966,9 +1966,10 @@ html.dark-mode .time-slot-btn:hover {
 }
 
 html.dark-mode .time-slot-btn.selected {
-  background: linear-gradient(135deg, #c17b3a 0%, #8b5a3c 100%);
-  color: #fff;
-  border-color: #f0bb85;
+  background: #2f2923;
+  color: #f8efe6;
+  border: 2px solid #f2a65a;
+  box-shadow: 0 0 0 3px rgba(242, 166, 90, 0.2);
 }
 
 html.dark-mode .time-slot-btn.blocked,
